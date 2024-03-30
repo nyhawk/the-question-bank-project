@@ -3,22 +3,21 @@
  * @version 17/3/23
  */
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 public class Module {
     private String moduleID;
-    private String moduleName;
-    private int yearOfStudy;
-
-    private String teacher;
     private ArrayList<String> questionBanks;
 
-    public Module (String startModuleID, String startModuleName){
+    public Module (String startModuleID){
         moduleID = startModuleID;
-        moduleName = startModuleName;
+        this.questionBanks = new ArrayList<>();
     }
     public String toString(){
-        String output = "ModuleID: " + this.moduleID + "\n moduleName: " + this.moduleName + "\n yearOfStudy: " + this.yearOfStudy
-                + "\n teacher: " + this.teacher + "\n";
+        String output = "ModuleID: " + this.moduleID;
         if (questionBanks != null) {
             output += "questionBanks: " + questionBanks + "\n";
         } else {
@@ -27,11 +26,29 @@ public class Module {
         return output;
     }
 
-    public void saveQuestionBank(){}
+    public void saveQuestionBank(String filename){
+
+        BufferedWriter fileOutput = null;
+        try {
+            fileOutput = new BufferedWriter(new FileWriter(filename, true));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        PrintWriter printWriter = new PrintWriter(fileOutput);
+
+        printWriter.println(this.questionBanks);
+
+        try {
+            fileOutput.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        printWriter.close();
+    }
 
     public void loadQuestionBanks(){}
     public void addQuestionBank(String questionBankID){
-        questionBanks = new ArrayList<>();
+
         questionBanks.add(questionBankID);
     }
 
@@ -51,25 +68,7 @@ public class Module {
         this.moduleID = newModuleID;
     }
 
-    public String getModuleName(){
-        return this.moduleName;
-    }
 
-    public void setModuleName(String newModuleName){
-        this.moduleName = newModuleName;
-    }
-
-    public int getYearOfStudy(){
-        return this.yearOfStudy;
-    }
-
-    public void setYearOfStudy(int newYearOfStudy){
-        this.yearOfStudy = newYearOfStudy;
-    }
-
-    public String getTeacher(){return this.teacher;}
-
-    public void setTeacher(String newTeacher){this.teacher = newTeacher;}
 
 
 
