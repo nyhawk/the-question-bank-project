@@ -1,13 +1,19 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * the main class from which the application will run
+ */
 public class Main {
     private ArrayList<Module> modules = new ArrayList<>();
 
     private Scanner userInp = new Scanner(System.in);
 
+    /**
+     * runs the program
+     */
     public void runApp(){
-        System.out.println("WELCOME TO THE QUESTION BANK");
+        System.out.println("********** The Question Bank **********");
         int menuOpt;
 
         do {
@@ -29,6 +35,7 @@ public class Main {
                     Module newModule = new Module(inpModuleID);
                     newModule.addQuestionBank(inpQuestionBankID);
                     modules.add(newModule);
+                    System.out.println("New question bank added");
                     break;
 
                 case 2:
@@ -72,6 +79,9 @@ public class Main {
 
     }
 
+    /**
+     * outputs the menu
+     */
     public void printMenu(){
         System.out.println("""
                 Select an option\s
@@ -85,7 +95,10 @@ public class Main {
                  8 - Exit""");
     }
 
-
+    /**
+     * initialises the main class and runs the application
+     * @param args the command line arguments passed to the application
+     */
     public static void main(String[] args) {
         Main app = new Main();
         app.runApp();
