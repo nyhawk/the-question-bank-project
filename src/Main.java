@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private ArrayList<Module> modules;
+    private ArrayList<Module> modules = new ArrayList<>();
 
-    private Scanner userInp;
+    private Scanner userInp = new Scanner(System.in);
 
     public void runApp(){
         System.out.println("WELCOME TO THE QUESTION BANK");
@@ -13,11 +13,22 @@ public class Main {
         do {
             printMenu();
             menuOpt = userInp.nextInt();
+            userInp.nextLine();
 
             switch(menuOpt){
                 case 1:
                     // create question bank
-                    System.out.println("This menu option has not been programmed yet!");
+
+                    // get questionBankID from user
+                    System.out.println("Input the question bank unique identifier");
+                    String inpQuestionBankID = userInp.nextLine();
+                    String idParts[] = inpQuestionBankID.split(":");
+                    String inpModuleID = idParts[0];
+
+                    // save relationship between module and question bank
+                    Module newModule = new Module(inpModuleID);
+                    newModule.addQuestionBank(inpQuestionBankID);
+                    modules.add(newModule);
                     break;
 
                 case 2:
