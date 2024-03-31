@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class QuestionBank {
     private String questionBankID;
@@ -13,24 +12,8 @@ public class QuestionBank {
         questionBankID = startQuestionBankID;
     }
 
-    /**
-     * add a new question
-     * @param newQuestion
-     */
-    public void addQuestion(Question newQuestion){ // note: I'm not sure if this param is correct, needs checking
-        Scanner userInp = new Scanner(System.in);
-
-        System.out.println("Select question type \n 1 - Single answer \n 2 - Fill-the-blanks");
-        int option = userInp.nextInt();
-        userInp.nextLine();
-        if (option == 1){
-            // call single answer method
-        } else if (option == 2){
-            // call fill the blanks method
-        } else {
-            System.out.println("Invalid menu option selected");
-        }
-
+    public void addQuestion(Question question){
+        questions.add(question);
     }
 
     /**
@@ -41,4 +24,17 @@ public class QuestionBank {
     public ArrayList<Question> getQuestions() {
         return questions;
     }
+
+    /**
+     * set question bank identifier
+     * @param questionBankID becomes new value of questionBankID attribute
+     */
+    public void setQuestionBankID(String questionBankID) {
+        this.questionBankID = questionBankID;
+    }
+
+    public void takeQuiz(){}
+
+
+
 }
