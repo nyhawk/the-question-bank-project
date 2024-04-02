@@ -4,20 +4,21 @@ public class Question {
 
     /**
      * constructor for Question class
-     * @param newQuestionText becomes initial question stem
+     * 
      */
-    public Question(String newQuestionText, int newAnswerIndex){
-        this.questionText = newQuestionText;
-        this.answerIndex = newAnswerIndex;
+    public Question(){
+
     }
 
+    public void addQuestion(){
+        // default question format, overridden in subclasses
+
+    }
     public String getQuestionText(){
         return this.questionText;
     }
 
-    public void setQuestionText(String newQuestionText){
-        this.questionText = newQuestionText;
-    }
+
 
     public void checkAnswer(){
 

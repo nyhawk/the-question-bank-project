@@ -1,8 +1,8 @@
 public class FillBlanks extends Question{
     private String blank;
 
-    public FillBlanks(String questionText, int answerIndex){
-        super(questionText, answerIndex);
+    public FillBlanks(String questionText){
+        super(questionText);
     }
 
     public void setBlank(String blank) {

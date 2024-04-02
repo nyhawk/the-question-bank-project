@@ -50,7 +50,7 @@ public class Main {
 
                 case 2:
                     // add question
-                    System.out.println("This menu option has not been programmed yet!");
+                    findQuestionType();
                     break;
 
                 case 3:
@@ -126,6 +126,32 @@ public class Main {
         }
         return valid;
     }
+    private void findQuestionType(){
+        System.out.println("""
+                Select a question type\s
+                 1 - Single answer\s
+                 2 - Fill-the-blanks\s
+               """);
+        int questionType = userInp.nextInt();
+        userInp.nextLine();
+
+        switch (questionType){
+            case 1:
+                // single answer
+                SingleAnswer question = new SingleAnswer();
+                question.addQuestion();
+                break;
+            case 2:
+                // fill-the-blanks
+                System.out.println("Input the question, with {blank} notating the blank");
+                question = new FillBlanks(userInp.nextLine());
+                break;
+            default:
+                System.out.println("Invalid question type");
+        }
+    }
+
+
 
         /**
      * initialises the main class and runs the application
