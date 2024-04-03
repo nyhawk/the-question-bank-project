@@ -1,12 +1,25 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.regex.Pattern;
+import  java.util.regex.Matcher;
 public class Question {
     String questionText;
-    int answerIndex;
+
+    String questionBankID;
 
     /**
      * constructor for Question class
      * 
      */
-    public Question(){
+    public Question(String questionBankID){
+        //validate id
+        Pattern idFormat = Pattern.compile(".+:.+");
+        Matcher matchFormat = idFormat.matcher(questionBankID);
+        boolean formatCorrect = matchFormat.find();
+        if (formatCorrect == false){
+            System.out.println("Invalid question bank identifier");
+        }
 
     }
 
@@ -24,11 +37,15 @@ public class Question {
 
     }
 
-    public void setAnswerIndex(int index) {
-        this.answerIndex = index;
-    }
 
     public void showQuestion() {
         System.out.println( "question text" + questionText);
+    }
+
+    public void writeQuestionToFile(String filename)throws IOException {
+        FileWriter fileWriter = new FileWriter(filename);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+
     }
 }

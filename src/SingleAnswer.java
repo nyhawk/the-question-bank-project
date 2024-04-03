@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class SingleAnswer extends Question {
     private ArrayList<String> possibleAnswers;
+    int answerIndex;
     Scanner userInp = new Scanner(System.in);
 
     public SingleAnswer() {

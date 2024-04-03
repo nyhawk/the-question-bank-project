@@ -138,13 +138,15 @@ public class Main {
         switch (questionType){
             case 1:
                 // single answer
-                SingleAnswer question = new SingleAnswer();
-                question.addQuestion();
+                SingleAnswer singleAnswerQuestion = new SingleAnswer();
+                System.out.println("Enter the question bank identifier for the new question");
+                singleAnswerQuestion.addQuestion(userInp.nextLine());
                 break;
             case 2:
                 // fill-the-blanks
-                System.out.println("Input the question, with {blank} notating the blank");
-                question = new FillBlanks(userInp.nextLine());
+                FillBlanks fillBlanksQuestion = new FillBlanks();
+                System.out.println("Enter the question bank identifier for the new question");
+                fillBlanksQuestion.addQuestion(userInp.nextLine());
                 break;
             default:
                 System.out.println("Invalid question type");
