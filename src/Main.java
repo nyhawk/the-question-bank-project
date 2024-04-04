@@ -1,14 +1,21 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * the main class from which the application will run
+ */
 public class Main {
     private ArrayList<Module> modules = new ArrayList<>();
 
     private Scanner userInp = new Scanner(System.in);
 
+    /**
+     * runs the program
+     */
     public void runApp(){
-        System.out.println("WELCOME TO THE QUESTION BANK");
+        System.out.println("********** The Question Bank **********");
         int menuOpt;
+        boolean validIDs;
 
         do {
             printMenu();
@@ -22,13 +29,23 @@ public class Main {
                     // get questionBankID from user
                     System.out.println("Input the question bank unique identifier");
                     String inpQuestionBankID = userInp.nextLine();
-                    String idParts[] = inpQuestionBankID.split(":");
-                    String inpModuleID = idParts[0];
+                    String separateIDs[] = inpQuestionBankID.split(":");
+                    String inpModuleID = separateIDs[0];
+                    String inpBankID = separateIDs[1];
 
-                    // save relationship between module and question bank
-                    Module newModule = new Module(inpModuleID);
-                    newModule.addQuestionBank(inpQuestionBankID);
-                    modules.add(newModule);
+                    //validate identifiers
+                    validIDs = checkID(inpModuleID, inpBankID);
+                    if (validIDs == true) {
+
+                        // save relationship between module and question bank
+                        Module newModule = new Module(inpModuleID);
+                        newModule.addQuestionBank(inpQuestionBankID);
+                        modules.add(newModule);
+                        System.out.println("New question bank added");
+
+                    } else if (validIDs == false){
+                        System.out.println("Invalid question bank identifier inputted");
+                    }
                     break;
 
                 case 2:
@@ -72,6 +89,9 @@ public class Main {
 
     }
 
+    /**
+     * outputs the menu
+     */
     public void printMenu(){
         System.out.println("""
                 Select an option\s
@@ -85,7 +105,32 @@ public class Main {
                  8 - Exit""");
     }
 
+    /**
+     * validate the inputted question bank identifier
+     * @param moduleID is the inputted module identifier
+     * @param bankID is the inputted bank identifier
+     * @return valid, true if both identifiers are within length range
+     */
+    private boolean checkID(String moduleID, String bankID){
+        boolean valid = false;
 
+        // find the length of the identifiers
+        int lengthModuleID = moduleID.length();
+        int lengthBankID = bankID.length();
+
+        // validate the lengths
+        if ((0 < lengthModuleID) && (lengthModuleID <=7)){
+            if ((0 < lengthBankID) && (lengthBankID <=15)){
+                valid = true;
+            }
+        }
+        return valid;
+    }
+
+    /**
+     * initialises the main class and runs the application
+     * @param args the command line arguments passed to the application
+     */
     public static void main(String[] args) {
         Main app = new Main();
         app.runApp();
