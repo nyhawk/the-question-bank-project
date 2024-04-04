@@ -3,9 +3,11 @@ import java.util.Scanner;
 
 public class SingleAnswer extends Question {
     private ArrayList<String> possibleAnswers;
+    int answerIndex;
     Scanner userInp = new Scanner(System.in);
 
-    public SingleAnswer() {
+    public SingleAnswer(String questionBankID) {
+        super(questionBankID);
         possibleAnswers = new ArrayList<>();
     }
 
@@ -17,7 +19,6 @@ public class SingleAnswer extends Question {
         return possibleAnswers;
     }
 
-    @Override
     public void showQuestion() {
         super.showQuestion();
         for (int i = 0; i < possibleAnswers.size(); i++) {
@@ -26,16 +27,17 @@ public class SingleAnswer extends Question {
     }
 
     public void addQuestion() {
-        SingleAnswer newQuestion = new SingleAnswer();
-        String inpString;
+        SingleAnswer newQuestion = new SingleAnswer(questionBankID);
+        String inpString = null;
+
         System.out.println("Enter the question");
         questionText = userInp.nextLine();
 
-        do {
+        while (!inpString.toLowerCase().equals("done")){
             System.out.println("Enter an option, or 'done' when all options entered");
             inpString = userInp.nextLine();
             newQuestion.addAnswer(inpString);
-        } while (!inpString.toLowerCase().contains("done"));
+        }
 
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");

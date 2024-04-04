@@ -1,21 +1,28 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.regex.Pattern;
+import  java.util.regex.Matcher;
 public class Question {
     String questionText;
-    int answerIndex;
+
+    String questionBankID;
 
     /**
      * constructor for Question class
      * 
      */
-    public Question(){
-
+    public Question(String newQuestionBankID) {
+        questionBankID = newQuestionBankID;
     }
 
-    public void addQuestion(){
+    public void addQuestion(String questionBankID){
         // default question format, overridden in subclasses
+        Question newQuestion = new Question(questionBankID);
 
     }
     public String getQuestionText(){
-        return this.questionText;
+        return questionText;
     }
 
 
@@ -24,11 +31,15 @@ public class Question {
 
     }
 
-    public void setAnswerIndex(int index) {
-        this.answerIndex = index;
-    }
 
     public void showQuestion() {
         System.out.println( "question text" + questionText);
+    }
+
+    public void writeQuestionToFile(String filename)throws IOException {
+        FileWriter fileWriter = new FileWriter(filename);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+
     }
 }
