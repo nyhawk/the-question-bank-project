@@ -12,23 +12,17 @@ public class Question {
      * constructor for Question class
      * 
      */
-    public Question(String questionBankID){
-        //validate id
-        Pattern idFormat = Pattern.compile(".+:.+");
-        Matcher matchFormat = idFormat.matcher(questionBankID);
-        boolean formatCorrect = matchFormat.find();
-        if (formatCorrect == false){
-            System.out.println("Invalid question bank identifier");
-        }
-
+    public Question(String newQuestionBankID) {
+        questionBankID = newQuestionBankID;
     }
 
-    public void addQuestion(){
+    public void addQuestion(String questionBankID){
         // default question format, overridden in subclasses
+        Question newQuestion = new Question(questionBankID);
 
     }
     public String getQuestionText(){
-        return this.questionText;
+        return questionText;
     }
 
 

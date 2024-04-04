@@ -4,8 +4,8 @@ public class FillBlanks extends Question{
     private String blank;
     Scanner userInp = new Scanner(System.in);
 
-    public FillBlanks(){
-
+    public FillBlanks(String questionBankID){
+        super(questionBankID);
     }
 
     public void setBlank(String blank) {

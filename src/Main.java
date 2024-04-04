@@ -29,13 +29,12 @@ public class Main {
                     // get questionBankID from user
                     System.out.println("Input the question bank unique identifier");
                     String inpQuestionBankID = userInp.nextLine();
-                    String separateIDs[] = inpQuestionBankID.split(":");
-                    String inpModuleID = separateIDs[0];
-                    String inpBankID = separateIDs[1];
 
-                    //validate identifiers
-                    validIDs = checkID(inpModuleID, inpBankID);
+                    //validate identifier
+                    validIDs = checkID(inpQuestionBankID);
                     if (validIDs == true) {
+                        String separateIDs[] = inpQuestionBankID.split(":");
+                        String inpModuleID = separateIDs[0];
 
                         // save relationship between module and question bank
                         Module newModule = new Module(inpModuleID);
@@ -50,6 +49,7 @@ public class Main {
 
                 case 2:
                     // add question
+                    // this method gets the question type from the user and initialises the appropriate object
                     findQuestionType();
                     break;
 
@@ -107,52 +107,67 @@ public class Main {
 
     /**
      * validate the inputted question bank identifier
-     * @param moduleID is the inputted module identifier
-     * @param bankID is the inputted bank identifier
-     * @return valid, true if both identifiers are within length range
+     * @param questionBankID is the question bank identifier
+     * @return valid, true if both identifiers are within length range and contains ":"
      */
-    private boolean checkID(String moduleID, String bankID){
+    private boolean checkID(String questionBankID){
         boolean valid = false;
 
-        // find the length of the identifiers
-        int lengthModuleID = moduleID.length();
-        int lengthBankID = bankID.length();
+        if (questionBankID.contains(":")) {
+            // split question bank identifier into module and bank identifiers
+            String separateIDs[] = questionBankID.split(":");
+            String moduleID = separateIDs[0];
+            String bankID = separateIDs[1];
 
-        // validate the lengths
-        if ((0 < lengthModuleID) && (lengthModuleID <=7)){
-            if ((0 < lengthBankID) && (lengthBankID <=15)){
-                valid = true;
+            // find the length of the identifiers
+            int lengthModuleID = moduleID.length();
+            int lengthBankID = bankID.length();
+
+            // validate the lengths
+            if ((0 < lengthModuleID) && (lengthModuleID <= 7)) {
+                if ((0 < lengthBankID) && (lengthBankID <= 15)) {
+                    valid = true;
+                }
             }
         }
         return valid;
     }
-    private void findQuestionType(){
-        System.out.println("""
-                Select a question type\s
-                 1 - Single answer\s
-                 2 - Fill-the-blanks\s
-               """);
-        int questionType = userInp.nextInt();
-        userInp.nextLine();
+    private void findQuestionType() {
+        // get the question bank to add the new question to
+        System.out.println("Enter the question bank identifier for the new question");
+        String questionBankID = userInp.nextLine();
 
-        switch (questionType){
-            case 1:
-                // single answer
-                SingleAnswer singleAnswerQuestion = new SingleAnswer();
-                System.out.println("Enter the question bank identifier for the new question");
-                singleAnswerQuestion.addQuestion(userInp.nextLine());
-                break;
-            case 2:
-                // fill-the-blanks
-                FillBlanks fillBlanksQuestion = new FillBlanks();
-                System.out.println("Enter the question bank identifier for the new question");
-                fillBlanksQuestion.addQuestion(userInp.nextLine());
-                break;
-            default:
-                System.out.println("Invalid question type");
+        // validate id
+        boolean validID = checkID(questionBankID);
+        if (validID == false) {
+            System.out.println("Invalid question bank identifier");
+
+        } else if (validID == true) {
+
+            System.out.println("""
+                     Select a question type\s
+                      1 - Single answer\s
+                      2 - Fill-the-blanks\s
+                    """);
+            int questionType = userInp.nextInt();
+            userInp.nextLine();
+
+            switch (questionType) {
+                case 1:
+                    // single answer
+                    SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID);
+                    singleAnswerQuestion.addQuestion();
+                    break;
+                case 2:
+                    // fill-the-blanks
+                    FillBlanks fillBlanksQuestion = new FillBlanks(questionBankID);
+                    fillBlanksQuestion.addQuestion();
+                    break;
+                default:
+                    System.out.println("Invalid question type");
+            }
         }
     }
-
 
 
         /**
