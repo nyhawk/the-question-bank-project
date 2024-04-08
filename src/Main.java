@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -50,12 +52,30 @@ public class Main {
                 case 2:
                     // add question
                     // this method gets the question type from the user and initialises the appropriate object
-                    findQuestionType();
+                    // get the question bank to add the new question to
+                    System.out.println("Enter the question bank identifier for the new question");
+                    String questionBankID = userInp.nextLine();
+
+                    // validate id
+                    boolean validID = checkID(questionBankID);
+                    if (validID == false) {
+                        System.out.println("Invalid question bank identifier");
+
+                    } else if (validID == true) {
+                        Question newQuestion = new Question(questionBankID, null);
+                        newQuestion.findQuestionType();
+                    }
                     break;
 
                 case 3:
                     // show question banks
-                    System.out.println("This menu option has not been programmed yet!");
+                    QuestionBank bank = new QuestionBank(null);
+//                    try {
+//                       // bank.showQuestionBanks("db.txt");
+//                    } catch (FileNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+                    // System.out.println("This menu option has not been programmed yet!");
                     break;
 
                 case 4:
@@ -81,11 +101,12 @@ public class Main {
                 case 8:
                     // quit
                     System.out.println("Exiting question bank application");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid menu option chosen");
             }
-        } while (menuOpt != 9);
+        } while (menuOpt != 8);
 
     }
 
@@ -110,7 +131,7 @@ public class Main {
      * @param questionBankID is the question bank identifier
      * @return valid, true if both identifiers are within length range and contains ":"
      */
-    private boolean checkID(String questionBankID){
+    public boolean checkID(String questionBankID){
         boolean valid = false;
 
         if (questionBankID.contains(":")) {
@@ -132,42 +153,8 @@ public class Main {
         }
         return valid;
     }
-    private void findQuestionType() {
-        // get the question bank to add the new question to
-        System.out.println("Enter the question bank identifier for the new question");
-        String questionBankID = userInp.nextLine();
 
-        // validate id
-        boolean validID = checkID(questionBankID);
-        if (validID == false) {
-            System.out.println("Invalid question bank identifier");
 
-        } else if (validID == true) {
-
-            System.out.println("""
-                     Select a question type\s
-                      1 - Single answer\s
-                      2 - Fill-the-blanks\s
-                    """);
-            int questionType = userInp.nextInt();
-            userInp.nextLine();
-
-            switch (questionType) {
-                case 1:
-                    // single answer
-                    SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID);
-                    singleAnswerQuestion.addQuestion();
-                    break;
-                case 2:
-                    // fill-the-blanks
-                    FillBlanks fillBlanksQuestion = new FillBlanks(questionBankID);
-                    fillBlanksQuestion.addQuestion();
-                    break;
-                default:
-                    System.out.println("Invalid question type");
-            }
-        }
-    }
 
 
         /**

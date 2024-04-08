@@ -1,22 +1,9 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class SingleAnswer extends Question {
-    private ArrayList<String> possibleAnswers;
-    int answerIndex;
-    Scanner userInp = new Scanner(System.in);
+    public SingleAnswer(String questionBankID, String questionType) {
+        super(questionBankID, questionType);
 
-    public SingleAnswer(String questionBankID) {
-        super(questionBankID);
-        possibleAnswers = new ArrayList<>();
-    }
-
-    public void addAnswer(String answer) {
-        possibleAnswers.add(answer);
-    }
-
-    public ArrayList<String> getPossibleAnswers() {
-        return possibleAnswers;
     }
 
     public void showQuestion() {
@@ -27,16 +14,16 @@ public class SingleAnswer extends Question {
     }
 
     public void addQuestion() {
-        SingleAnswer newQuestion = new SingleAnswer(questionBankID);
-        String inpString = null;
+        SingleAnswer newQuestion = new SingleAnswer(questionBankID, questionType);
 
         System.out.println("Enter the question");
-        questionText = userInp.nextLine();
+        newQuestion.setQuestionText(userInp.nextLine());
 
-        while (!inpString.toLowerCase().equals("done")){
-            System.out.println("Enter an option, or 'done' when all options entered");
-            inpString = userInp.nextLine();
+        System.out.println("Enter an option, or 'q' when all options entered");
+        String inpString = userInp.nextLine();
+        while (!inpString.equalsIgnoreCase("q")){
             newQuestion.addAnswer(inpString);
+            inpString = userInp.nextLine();
         }
 
         System.out.println("This is the new question. " +
@@ -44,8 +31,16 @@ public class SingleAnswer extends Question {
         for (int index = 0; index < newQuestion.possibleAnswers.size(); index++) {
             System.out.println(index + ". " + newQuestion.possibleAnswers.get(index));
         }
+
         newQuestion.answerIndex = userInp.nextInt();
         userInp.nextLine();
-    }
-}
 
+        // save question to file
+        try {
+            newQuestion.writeQuestionToFile("db.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}

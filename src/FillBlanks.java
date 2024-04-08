@@ -1,20 +1,21 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class FillBlanks extends Question{
-    private String blank;
+
     Scanner userInp = new Scanner(System.in);
 
-    public FillBlanks(String questionBankID){
-        super(questionBankID);
+    public FillBlanks(String questionBankID, String questionType){
+        super(questionBankID, questionType);
     }
 
     public void setBlank(String blank) {
-        this.blank = blank;
+        possibleAnswers.addFirst(blank);
     }
-
-    public String getBlank() {
-        return blank;
-    }
+//
+//    public String getBlank() {
+//        return blank;
+//    }
 
     public void outputQuestion(){
         String question = super.getQuestionText().replace("[blank]","_____");
@@ -28,11 +29,20 @@ public class FillBlanks extends Question{
 
 
     public void addQuestion(){
-        System.out.println("Enter the question, notating the blank with [blank]");
-        this.questionText = userInp.nextLine();
-        System.out.println("Enter the missing text");
-        this.blank = userInp.nextLine().toLowerCase();
+        FillBlanks newQuestion = new FillBlanks(questionBankID, questionType);
 
+        System.out.println("Enter the question, notating the blank with [blank]");
+        newQuestion.setQuestionText(userInp.nextLine());
+
+        System.out.println("Enter the missing text");
+        newQuestion.setBlank(userInp.nextLine().toLowerCase());
+
+        // save question to file
+        try {
+            newQuestion.writeQuestionToFile("db.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
