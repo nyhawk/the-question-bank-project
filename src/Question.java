@@ -1,15 +1,16 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class Question {
+abstract class Question {
     String questionText;
 
     String questionBankID;
 
-    Scanner userInp = new Scanner(System.in);
-
     ArrayList<String> possibleAnswers;
+
+    Scanner userInp = new Scanner(System.in);
 
     int answerIndex;
 
@@ -21,14 +22,12 @@ public class Question {
     public Question(String newQuestionBankID, String newQuestionType) {
         questionBankID = newQuestionBankID;
         questionType = newQuestionType;
-        possibleAnswers = new ArrayList<>();
+
     }
 
-    public void addQuestion(String questionBankID, String questionType) {
-        // default question format, overridden in subclasses
-        Question newQuestion = new Question(questionBankID, questionType);
-
-
+    public void addQuestion(String questionBankID, String questionType) {}
+    public ArrayList<String> getPossibleAnswers() {
+        return possibleAnswers;
     }
 
     public void setQuestionText(String questionText) {
@@ -39,12 +38,9 @@ public class Question {
         return questionText;
     }
 
-    public void addAnswer(String answer) {
-        possibleAnswers.add(answer);
-    }
-
-    public ArrayList<String> getPossibleAnswers() {
-        return possibleAnswers;
+    public void setPossibleAnswers(String answers){
+        String answersFromFile[] = answers.split(",");
+        possibleAnswers.addAll(Arrays.asList(answersFromFile));
     }
 
     public void checkAnswer() {
@@ -53,7 +49,7 @@ public class Question {
 
 
     public void showQuestion() {
-        System.out.println("question text" + questionText);
+        System.out.println(questionText);
     }
 
     public void writeQuestionToFile(String filename) throws IOException {
@@ -67,37 +63,14 @@ public class Question {
     }
 
     public String toString() {
-        String output = questionBankID + ";" + questionType + ";" + questionText + ";" + possibleAnswers + ";" + answerIndex + "\n";
+        String output = questionBankID + ";;" + questionType + ";;" + questionText + ";;" + possibleAnswers + ";;" + answerIndex + "\n";
         return output;
     }
 
-    public void findQuestionType() {
-            System.out.println("""
-                     Select a question type\s
-                      1 - Single answer\s
-                      2 - Fill-the-blanks\s
-                    """);
-            int inpQuestionType = userInp.nextInt();
-            userInp.nextLine();
+    public void setAnswerIndex(int newAnswerIndex){
+        answerIndex = newAnswerIndex;
+    }
 
-            switch (inpQuestionType) {
-                case 1:
-                    // single answer
-                    SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID, questionType);
-                   singleAnswerQuestion.setQuestionType("SingleAnswer");
-                    singleAnswerQuestion.addQuestion();
-
-                    break;
-                case 2:
-                    // fill-the-blanks
-                    FillBlanks fillBlanksQuestion = new FillBlanks(questionBankID, questionType);
-                  fillBlanksQuestion.setQuestionType("FillBlanks");
-                    fillBlanksQuestion.addQuestion();
-                    break;
-                default:
-                    System.out.println("Invalid question type");
-            }
-        }
     public void setQuestionType(String questionType){
         this.questionType = questionType;
     }

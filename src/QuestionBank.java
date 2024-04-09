@@ -41,13 +41,35 @@ public class QuestionBank {
     public void loadFile(String filename) throws FileNotFoundException {
         FileReader fileReader = new FileReader(filename);
         Scanner scanner = new Scanner(fileReader);
-        scanner.useDelimiter(";"); // separator
+        scanner.useDelimiter(";:"); // separator
         while (scanner.hasNext()){
-            String idFromFile = scanner.next();
-            String typeFromFile = scanner.next();
+            String readID = scanner.next();
+            String readType = scanner.next();
+            String readQuestionText = scanner.next();
+            String readAnswers = scanner.next();
+            int readAnswerIndex = scanner.nextInt();
 
-            System.out.println(idFromFile);
+            if (readID.equals(questionBankID)) {
+                if (readType.equals("SingleAnswer")) {
+                    SingleAnswer newQuestion = new SingleAnswer(readID, readType);
+                    newQuestion.setQuestionText(readQuestionText);
+                    newQuestion.setPossibleAnswers(readAnswers);
+                    newQuestion.setAnswerIndex(readAnswerIndex);
+                    this.addQuestion(newQuestion);
+
+                } else if (readType.equals("FillBlanks")) {
+                    FillBlanks newQuestion = new FillBlanks(readID, readType);
+                    newQuestion.setQuestionText(readQuestionText);
+                    newQuestion.setPossibleAnswers(readAnswers);
+                    newQuestion.setAnswerIndex(readAnswerIndex);
+                    this.addQuestion(newQuestion);
+
+                }
+
+            }
         }
         scanner.close();
     }
+
+
 }

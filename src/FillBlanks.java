@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FillBlanks extends Question{
@@ -7,10 +8,12 @@ public class FillBlanks extends Question{
 
     public FillBlanks(String questionBankID, String questionType){
         super(questionBankID, questionType);
+        possibleAnswers = new ArrayList<>();
     }
 
     public void setBlank(String blank) {
         possibleAnswers.addFirst(blank);
+        super.setAnswerIndex(0);
     }
 //
 //    public String getBlank() {
@@ -18,7 +21,7 @@ public class FillBlanks extends Question{
 //    }
 
     public void outputQuestion(){
-        String question = super.getQuestionText().replace("[blank]","_____");
+        String question = super.getQuestionText().replace("{{blank}}","_____");
         System.out.println("Fill in the blank: ");
         System.out.println(question);
     }
@@ -31,11 +34,11 @@ public class FillBlanks extends Question{
     public void addQuestion(){
         FillBlanks newQuestion = new FillBlanks(questionBankID, questionType);
 
-        System.out.println("Enter the question, notating the blank with [blank]");
+        System.out.println("Enter the question, notating the location of the blank with {{blank}}");
         newQuestion.setQuestionText(userInp.nextLine());
 
         System.out.println("Enter the missing text");
-        newQuestion.setBlank(userInp.nextLine().toLowerCase());
+        newQuestion.setBlank(userInp.nextLine());
 
         // save question to file
         try {

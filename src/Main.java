@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -62,20 +61,45 @@ public class Main {
                         System.out.println("Invalid question bank identifier");
 
                     } else if (validID == true) {
-                        Question newQuestion = new Question(questionBankID, null);
-                        newQuestion.findQuestionType();
-                    }
+                        System.out.println("""
+                     Select a question type\s
+                      1 - Single answer\s
+                      2 - Fill-the-blanks\s
+                    """);
+                        int inpQuestionType = userInp.nextInt();
+                        userInp.nextLine();
+
+                        switch (inpQuestionType) {
+                            case 1:
+                            // single answer
+                                SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID, "SingleAnswer");
+                                singleAnswerQuestion.setQuestionType("SingleAnswer");
+                                singleAnswerQuestion.addQuestion();
+
+                            break;
+                            case 2:
+                                // fill-the-blanks
+                                    FillBlanks fillBlanksQuestion;
+                                    fillBlanksQuestion = new FillBlanks(questionBankID, "FillBlanks");
+                                    fillBlanksQuestion.setQuestionType("FillBlanks");
+                                    fillBlanksQuestion.addQuestion();
+                                    break;
+                            default:
+                                System.out.println("Invalid question type");
+                            }
+                        }
+
                     break;
 
                 case 3:
                     // show question banks
                     QuestionBank bank = new QuestionBank(null);
-//                    try {
-//                       // bank.showQuestionBanks("db.txt");
-//                    } catch (FileNotFoundException e) {
-//                        throw new RuntimeException(e);
-//                    }
-                    // System.out.println("This menu option has not been programmed yet!");
+                    try {
+                       bank.loadFile("db.txt");
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                     System.out.println("This menu option has not been programmed yet!");
                     break;
 
                 case 4:

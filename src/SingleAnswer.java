@@ -1,15 +1,17 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SingleAnswer extends Question {
+
     public SingleAnswer(String questionBankID, String questionType) {
         super(questionBankID, questionType);
-
+        possibleAnswers = new ArrayList<>();
     }
 
     public void showQuestion() {
         super.showQuestion();
-        for (int i = 0; i < possibleAnswers.size(); i++) {
-            System.out.println();
+        for (int index = 0; index < this.possibleAnswers.size(); index++) {
+            System.out.println(index + ". " + this.possibleAnswers.get(index));
         }
     }
 
@@ -28,11 +30,11 @@ public class SingleAnswer extends Question {
 
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
-        for (int index = 0; index < newQuestion.possibleAnswers.size(); index++) {
-            System.out.println(index + ". " + newQuestion.possibleAnswers.get(index));
-        }
-
-        newQuestion.answerIndex = userInp.nextInt();
+        newQuestion.showQuestion();
+//        for (int index = 0; index < newQuestion.possibleAnswers.size(); index++) {
+//            System.out.println(index + ". " + newQuestion.possibleAnswers.get(index));
+//        }
+        newQuestion.setAnswerIndex(userInp.nextInt());
         userInp.nextLine();
 
         // save question to file
@@ -41,6 +43,18 @@ public class SingleAnswer extends Question {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addAnswer(String answer) {
+        possibleAnswers.add(answer);
+    }
+
+
+
+    @Override
+    public void writeQuestionToFile(String filename) throws IOException{
+        super.writeQuestionToFile(filename);
+
     }
 
 }
