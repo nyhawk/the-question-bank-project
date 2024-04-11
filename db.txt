@@ -1,2 +1,3 @@
-1:1;SingleAnswer;how many options;[a, s, d, f, g];3
-1:2;FillBlanks;this has [blank];[a blank];0
+1:1;;SingleAnswer;;how many options;;a,s,d,f,g;;3;;
+1:2;;FillBlanks;;this has [blank];;a blank;;0;;
+1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;

@@ -3,11 +3,9 @@
  * @version 17/3/23
  */
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * this is the Module class which creates and stores modules with their question banks
@@ -15,21 +13,25 @@ import java.util.ArrayList;
 public class Module {
     private String moduleID;
     private ArrayList<String> questionBanks;
+    FileReader fileReader;
+    Scanner scanner;
 
     /**
      * constructor for Module
+     *
      * @param startModuleID becomes the initial module identifier
      */
-    public Module (String startModuleID){
+    public Module(String startModuleID) {
         moduleID = startModuleID;
         this.questionBanks = new ArrayList<>();
     }
 
     /**
      * display module attributes
+     *
      * @return module attributes
      */
-    public String toString(){
+    public String toString() {
         String output = "ModuleID: " + this.moduleID;
         if (questionBanks != null) {
             output += "questionBanks: " + questionBanks + "\n";
@@ -41,9 +43,10 @@ public class Module {
 
     /**
      * write question bank to file
+     *
      * @param filename is the name of the database file where the question bank is stored
      */
-    public void saveQuestionBank(String filename){
+    public void saveQuestionBank(String filename) {
 
         BufferedWriter fileOutput = null;
         try {
@@ -63,38 +66,48 @@ public class Module {
         printWriter.close();
     }
 
-    /**
-     * read question banks from file
-     * @param filename is the file to read the data from
-     */
-    public void loadQuestionBanks(String filename){}
 
     /**
      * add a new question bank to the module
+     *
      * @param questionBankID is the question bank unique identifier
      */
-    public void addQuestionBank(String questionBankID){
+    public void addQuestionBank(String questionBankID) {
 
         questionBanks.add(questionBankID);
     }
 
     /**
      * delete empty question bank
+     *
      * @param questionBankID is the question bank unique identifier
      */
-    public void removeQuestionBank(String questionBankID){
-        for (int i = 0; i < questionBanks.size(); i++){
-            if (questionBanks.get(i).equals(questionBankID)){
-                questionBanks.remove(i);
+    public void removeQuestionBank(String questionBankID, String filename) throws IOException {
+        // remove from questionBanks list
+        for (int i = 0; i < questionBanks.size(); i++) {
+            if (questionBanks.get(i).equals(questionBankID)) {
+                // check if empty by reading file
+                fileReader = new FileReader(filename);
+                scanner = new Scanner(fileReader);
+                scanner.useDelimiter(";;"); // separator
+
+                while (scanner.hasNextLine()) {
+                    String readID = scanner.next();
+                    scanner.nextLine();
+                    if (!(questionBankID.contains(readID))) {
+                        questionBanks.remove(i);
+                    } else {
+                        System.out.println("Question bank is not empty so cannot be deleted");
+                    }
+                }
             }
         }
     }
-
-    /**
-     * get module identifier
-     * @return module identifier
-     */
-    public String getModuleID(){
+//        /**
+//         * get module identifier
+//         * @return module identifier
+//         */
+    public String getModuleID() {
         return this.moduleID;
     }
 
@@ -102,7 +115,31 @@ public class Module {
      * update moduleID
      * @param newModuleID is the new identifier for the module object
      */
-    public void setModuleID(String newModuleID) {
+    public void setModuleID (String newModuleID){
         this.moduleID = newModuleID;
+    }
+
+    public void loadQuestionBanks (String filename) throws FileNotFoundException {
+        fileReader = new FileReader(filename);
+        scanner = new Scanner(fileReader);
+        scanner.useDelimiter(";;"); // separator
+
+        while (scanner.hasNextLine()) {
+            String readID = scanner.next();
+            String separateIDs[] = readID.split(":");
+            String readModuleID = separateIDs[0];
+
+            scanner.nextLine();
+            if (!(questionBanks.contains(readID))) {
+                this.addQuestionBank(readID);
+            }
+        }
+        showQuestionBanks();
+    }
+
+    public void showQuestionBanks () {
+        for (String questionBank : questionBanks) {
+            System.out.println(questionBank);
+        }
     }
 }

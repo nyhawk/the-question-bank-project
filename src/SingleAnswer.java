@@ -10,8 +10,10 @@ public class SingleAnswer extends Question {
 
     public void showQuestion() {
         super.showQuestion();
+        int questionNum = 1;
         for (int index = 0; index < this.possibleAnswers.size(); index++) {
-            System.out.println(index + ". " + this.possibleAnswers.get(index));
+            System.out.println(questionNum++ + ". " + this.possibleAnswers.get(index));
+
         }
     }
 
@@ -31,10 +33,7 @@ public class SingleAnswer extends Question {
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
         newQuestion.showQuestion();
-//        for (int index = 0; index < newQuestion.possibleAnswers.size(); index++) {
-//            System.out.println(index + ". " + newQuestion.possibleAnswers.get(index));
-//        }
-        newQuestion.setAnswerIndex(userInp.nextInt());
+        newQuestion.setAnswerIndex(userInp.nextInt()-1);
         userInp.nextLine();
 
         // save question to file
@@ -48,13 +47,4 @@ public class SingleAnswer extends Question {
     public void addAnswer(String answer) {
         possibleAnswers.add(answer);
     }
-
-
-
-    @Override
-    public void writeQuestionToFile(String filename) throws IOException{
-        super.writeQuestionToFile(filename);
-
-    }
-
 }

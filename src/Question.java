@@ -63,7 +63,11 @@ abstract class Question {
     }
 
     public String toString() {
-        String output = questionBankID + ";;" + questionType + ";;" + questionText + ";;" + possibleAnswers + ";;" + answerIndex + "\n";
+        String answers = "";
+        for (String possibleAnswers : possibleAnswers){
+            answers = answers + "," + possibleAnswers;
+        }
+        String output = questionBankID + ";;" + questionType + ";;" + questionText + ";;" + answers + ";;" + answerIndex + ";;\n";
         return output;
     }
 
