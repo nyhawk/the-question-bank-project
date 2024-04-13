@@ -1,15 +1,19 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SingleAnswer extends Question {
+
     public SingleAnswer(String questionBankID, String questionType) {
         super(questionBankID, questionType);
-
+        possibleAnswers = new ArrayList<>();
     }
 
     public void showQuestion() {
         super.showQuestion();
-        for (int i = 0; i < possibleAnswers.size(); i++) {
-            System.out.println();
+        int questionNum = 1;
+        for (String possibleAnswer : this.possibleAnswers) {
+            System.out.println(questionNum++ + ". " + possibleAnswer);
+
         }
     }
 
@@ -28,11 +32,8 @@ public class SingleAnswer extends Question {
 
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
-        for (int index = 0; index < newQuestion.possibleAnswers.size(); index++) {
-            System.out.println(index + ". " + newQuestion.possibleAnswers.get(index));
-        }
-
-        newQuestion.answerIndex = userInp.nextInt();
+        newQuestion.showQuestion();
+        newQuestion.setAnswerIndex(userInp.nextInt()-1);
         userInp.nextLine();
 
         // save question to file
@@ -43,4 +44,7 @@ public class SingleAnswer extends Question {
         }
     }
 
+    public void addAnswer(String answer) {
+        possibleAnswers.add(answer);
+    }
 }
