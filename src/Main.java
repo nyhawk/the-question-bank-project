@@ -44,7 +44,11 @@ public class Main {
                         newModule.addQuestionBank(questionBankID);
                         modules.add(newModule);
                         System.out.println("New question bank added");
-
+                        try {
+                            newModule.writeModuleToFile("db.txt");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else if (!validIDs) {
                         System.out.println("Invalid question bank identifier inputted");
                     }
@@ -151,24 +155,18 @@ public class Main {
 
                 case 6:
                     // delete question
-                    System.out.println("Input the question bank identifier of the question to be deleted");
+                    System.out.println("Input the index of the question to be deleted, " +
+                            "displayed next to the question when all questions shown (menu option 4)");
+                    int questionIndex = userInp.nextInt();
+                    QuestionBank deleteQuestion = new QuestionBank(null);
 
-                    questionBankID = userInp.nextLine();
-
-                    //validate identifier
-                    validIDs = checkID(questionBankID);
-                    if (validIDs==true) {
-                        QuestionBank deleteQuestion = new QuestionBank(questionBankID);
-
-                        try {
-                            deleteQuestion.removeQuestion(questionBankID, "db.txt");
-                        } catch (IOException e) {
+                    try {
+                        deleteQuestion.removeQuestion("db.txt", questionIndex);
+                    } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
 
-                    } else {
-                        System.out.println("Invalid question bank identifier inputted");
-                    }
+
                     break;
 
                 case 7:

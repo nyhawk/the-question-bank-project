@@ -11,8 +11,8 @@ public class SingleAnswer extends Question {
     public void showQuestion() {
         super.showQuestion();
         int questionNum = 1;
-        for (int index = 0; index < this.possibleAnswers.size(); index++) {
-            System.out.println(questionNum++ + ". " + this.possibleAnswers.get(index));
+        for (String possibleAnswer : this.possibleAnswers) {
+            System.out.println(questionNum++ + ". " + possibleAnswer);
 
         }
     }

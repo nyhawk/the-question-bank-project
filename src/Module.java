@@ -142,4 +142,14 @@ public class Module {
             System.out.println(questionBank);
         }
     }
+
+    public void writeModuleToFile(String filename) throws IOException {
+        FileWriter fileWriter = new FileWriter(filename, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+        bufferedWriter.write(this.toString());
+        bufferedWriter.close();
+        fileWriter.close();
+        System.out.println("New question saved");
+    }
 }

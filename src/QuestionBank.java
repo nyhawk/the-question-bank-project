@@ -8,14 +8,15 @@ public class QuestionBank {
 
     /**
      * constructor for the class QuestionBank
+     *
      * @param startQuestionBankID becomes initial questionBankID value
      */
-    public QuestionBank(String startQuestionBankID){
+    public QuestionBank(String startQuestionBankID) {
         questionBankID = startQuestionBankID;
         questions = new ArrayList<Question>();
     }
 
-    public void addQuestion(Question question){
+    public void addQuestion(Question question) {
         questions.add(question);
     }
 
@@ -25,28 +26,31 @@ public class QuestionBank {
 
     /**
      * set question bank identifier
+     *
      * @param questionBankID becomes new value of questionBankID attribute
      */
     public void setQuestionBankID(String questionBankID) {
         this.questionBankID = questionBankID;
     }
 
-    public void takeQuiz(){}
+    public void takeQuiz() {
+    }
 
     public void loadFile(String filename) throws FileNotFoundException {
         FileReader fileReader = new FileReader(filename);
         Scanner scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
-
-        while (scanner.hasNext()){
+        int counter = 1;
+        while (scanner.hasNext()) {
             String readID = scanner.next();
-            if (!readID.isEmpty()){
+            if (!readID.isEmpty()) {
                 String readType = scanner.next();
                 String readQuestionText = scanner.next();
                 String readAnswers = scanner.next();
                 int readAnswerIndex = scanner.nextInt();
 
                 if (readID.equals(questionBankID)) {
+                    System.out.println("Question " + counter++);
                     if (readType.equals("SingleAnswer")) {
                         SingleAnswer newQuestion = new SingleAnswer(readID, readType);
                         newQuestion.setQuestionText(readQuestionText);
@@ -64,19 +68,19 @@ public class QuestionBank {
                         newQuestion.showQuestion();
                     }
                 }
-            scanner.nextLine();
+                scanner.nextLine();
             }
         }
         scanner.close();
     }
 
-    public void showAllQuestions(){
+    public void showAllQuestions() {
         for (Question question : questions) {
             System.out.println(question);
         }
     }
 
-    public void removeQuestion(String filename, String questionBankID) throws IOException {
+    public void removeQuestion(String filename, int questionIndex) throws IOException {
         // remove from file
         FileReader fileReader = new FileReader(filename);
         Scanner scanner = new Scanner(fileReader);
@@ -85,22 +89,36 @@ public class QuestionBank {
         FileWriter fileWriter = new FileWriter(tempFilename, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        while (scanner.hasNextLine()) {
-            String readID = scanner.next();
+        int counter = 1; // start at 1 as questionIndex starts at 1 to be user-friendly
+        String readQuestion;
+        String modifiedQuestion;
 
-            scanner.nextLine();
-            if (!(readID.contains(questionBankID))) {
-                bufferedWriter.write(this.toString());
+        while (scanner.hasNextLine()) {
+            readQuestion = scanner.nextLine();
+
+            // scanner.nextLine();
+            if (!(counter == (questionIndex))) {
+                bufferedWriter.write(readQuestion + "\n");
+            } else if (counter == (questionIndex)) {
+                // modify the question so only ID stored to preserve the question bank in the file
+                int splitLocation = readQuestion.indexOf(";;");
+                modifiedQuestion = readQuestion.substring(0, splitLocation);
+                bufferedWriter.write(modifiedQuestion + ";;;;;;;;;;" + "\n");
+
             }
+            counter++;
         }
         bufferedWriter.close();
         fileWriter.close();
+        fileReader.close();
 
         // rename file
         File tempFile = new File(tempFilename);
         File oldFile = new File(filename);
         oldFile.delete();
+
+
         tempFile.renameTo(oldFile);
-        tempFile.delete();
+
     }
 }

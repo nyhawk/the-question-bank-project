@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class FillBlanks extends Question{
-
-    Scanner userInp = new Scanner(System.in);
 
     public FillBlanks(String questionBankID, String questionType){
         super(questionBankID, questionType);
