@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class Module {
     private String moduleID;
     private ArrayList<String> questionBanks;
-    FileReader fileReader;
-    Scanner scanner;
+    private FileReader fileReader;
+    private Scanner scanner;
 
     /**
      * constructor for Module
@@ -25,47 +25,6 @@ public class Module {
         moduleID = startModuleID;
         this.questionBanks = new ArrayList<>();
     }
-
-    /**
-     * display module attributes
-     *
-     * @return module attributes
-     */
-    public String toString() {
-        String output = "ModuleID: " + this.moduleID;
-        if (questionBanks != null) {
-            output += "questionBanks: " + questionBanks + "\n";
-        } else {
-            output += "questionBanks: none \n";
-        }
-        return output;
-    }
-
-    /**
-     * write question bank to file
-     *
-     * @param filename is the name of the database file where the question bank is stored
-     */
-    public void saveQuestionBank(String filename) {
-
-        BufferedWriter fileOutput = null;
-        try {
-            fileOutput = new BufferedWriter(new FileWriter(filename, true));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        PrintWriter printWriter = new PrintWriter(fileOutput);
-
-        printWriter.println(this.questionBanks);
-
-        try {
-            fileOutput.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        printWriter.close();
-    }
-
 
     /**
      * add a new question bank to the module
@@ -143,11 +102,11 @@ public class Module {
         }
     }
 
-    public void writeModuleToFile(String filename) throws IOException {
+    public void writeBankToFile(String filename, String questionBankID) throws IOException {
         FileWriter fileWriter = new FileWriter(filename, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        bufferedWriter.write(this.toString());
+        bufferedWriter.write(questionBankID + ";;;;;;;;;;" + "\n");
         bufferedWriter.close();
         fileWriter.close();
         System.out.println("New question saved");

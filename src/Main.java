@@ -19,6 +19,7 @@ public class Main {
         int menuOpt;
         boolean validIDs;
         String questionBankID;
+        QuestionBank bank = null;
 
         do {
             printMenu();
@@ -45,7 +46,7 @@ public class Main {
                         modules.add(newModule);
                         System.out.println("New question bank added");
                         try {
-                            newModule.writeModuleToFile("db.txt");
+                            newModule.writeBankToFile("db.txt", questionBankID);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -115,7 +116,7 @@ public class Main {
                     // show questions
                     System.out.println("Input the question bank identifier");
 
-                    QuestionBank bank = new QuestionBank(userInp.nextLine());
+                    bank = new QuestionBank(userInp.nextLine());
                     try {
                         bank.loadFile("db.txt");
                     } catch (FileNotFoundException e) {
@@ -158,15 +159,16 @@ public class Main {
                     System.out.println("Input the index of the question to be deleted, " +
                             "displayed next to the question when all questions shown (menu option 4)");
                     int questionIndex = userInp.nextInt();
-                    QuestionBank deleteQuestion = new QuestionBank(null);
 
-                    try {
-                        deleteQuestion.removeQuestion("db.txt", questionIndex);
-                    } catch (IOException e) {
+                    if (bank != null) {
+                        try {
+                            bank.removeQuestion("db.txt", questionIndex);
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-
-
+                    } else {
+                        System.out.println("View a question bank's questions in option 4 before deleting");
+                    }
                     break;
 
                 case 7:

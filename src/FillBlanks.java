@@ -23,10 +23,6 @@ public class FillBlanks extends Question{
         System.out.println(question);
     }
 
-//    private void setAnswerIndex(){
-//        answerIndex = questionText.indexOf("[blank]");
-//    }
-
 
     public void addQuestion(){
         FillBlanks newQuestion = new FillBlanks(questionBankID, questionType);

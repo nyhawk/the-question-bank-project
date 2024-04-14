@@ -1,6 +1,0 @@
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;

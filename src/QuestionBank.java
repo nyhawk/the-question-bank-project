@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class QuestionBank {
     private String questionBankID;
     private ArrayList<Question> questions;
+    private FileReader fileReader;
+    private Scanner scanner;
 
     /**
      * constructor for the class QuestionBank
@@ -37,8 +39,8 @@ public class QuestionBank {
     }
 
     public void loadFile(String filename) throws FileNotFoundException {
-        FileReader fileReader = new FileReader(filename);
-        Scanner scanner = new Scanner(fileReader);
+        fileReader = new FileReader(filename);
+        scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
         int counter = 1;
         while (scanner.hasNext()) {
@@ -74,16 +76,10 @@ public class QuestionBank {
         scanner.close();
     }
 
-    public void showAllQuestions() {
-        for (Question question : questions) {
-            System.out.println(question);
-        }
-    }
-
     public void removeQuestion(String filename, int questionIndex) throws IOException {
         // remove from file
-        FileReader fileReader = new FileReader(filename);
-        Scanner scanner = new Scanner(fileReader);
+        fileReader = new FileReader(filename);
+        scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
         String tempFilename = "tempFile.txt";
         FileWriter fileWriter = new FileWriter(tempFilename, true);
@@ -97,16 +93,18 @@ public class QuestionBank {
             readQuestion = scanner.nextLine();
 
             // scanner.nextLine();
-            if (!(counter == (questionIndex))) {
-                bufferedWriter.write(readQuestion + "\n");
-            } else if (counter == (questionIndex)) {
-                // modify the question so only ID stored to preserve the question bank in the file
-                int splitLocation = readQuestion.indexOf(";;");
-                modifiedQuestion = readQuestion.substring(0, splitLocation);
-                bufferedWriter.write(modifiedQuestion + ";;;;;;;;;;" + "\n");
+            if (!(readQuestion.startsWith(questionBankID))) {
+                if (counter == (questionIndex)) {
+                    // modify the question so only ID stored to preserve the question bank in the file
+                    int splitLocation = readQuestion.indexOf(";;");
+                    modifiedQuestion = readQuestion.substring(0, splitLocation);
+                    bufferedWriter.write(modifiedQuestion + ";;;;;;;;;;" + "\n");
 
+                }
+                counter++;
+            } else {
+                bufferedWriter.write(readQuestion + "\n");
             }
-            counter++;
         }
         bufferedWriter.close();
         fileWriter.close();
@@ -116,8 +114,6 @@ public class QuestionBank {
         File tempFile = new File(tempFilename);
         File oldFile = new File(filename);
         oldFile.delete();
-
-
         tempFile.renameTo(oldFile);
 
     }
