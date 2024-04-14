@@ -109,6 +109,6 @@ public class Module {
         bufferedWriter.write(questionBankID + ";;;;;;;;;;" + "\n");
         bufferedWriter.close();
         fileWriter.close();
-        System.out.println("New question saved");
+        System.out.println("New question bank saved");
     }
 }

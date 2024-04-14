@@ -93,7 +93,7 @@ public class QuestionBank {
             readQuestion = scanner.nextLine();
 
             // scanner.nextLine();
-            if (!(readQuestion.startsWith(questionBankID))) {
+            if ((readQuestion.startsWith(questionBankID))) {
                 if (counter == (questionIndex)) {
                     // modify the question so only ID stored to preserve the question bank in the file
                     int splitLocation = readQuestion.indexOf(";;");

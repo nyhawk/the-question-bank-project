@@ -1,9 +1,1 @@
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;
-1:1;;;;;;;;;;
-1:1;;SingleAnswer;;efgh;;,e,f,g,h;;1;;
-1:2;;SingleAnswer;;wert;;,w,e,r,t;;2;;
+CS12320:0004;;SingleAnswer;;testing a q?;;,answer 1,answer 2,answer 3;;1;;

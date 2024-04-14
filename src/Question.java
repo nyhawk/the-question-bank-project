@@ -53,13 +53,51 @@ abstract class Question {
     }
 
     public void writeQuestionToFile(String filename) throws IOException {
-        FileWriter fileWriter = new FileWriter(filename, true);
+        String tempFilename = "tempFile.txt";
+
+        FileWriter fileWriter = new FileWriter(tempFilename, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        bufferedWriter.write(this.toString());
+        FileReader fileReader = new FileReader(filename);
+        Scanner scanner = new Scanner(fileReader);
+        scanner.useDelimiter(";;"); // separator
+
+        boolean questionAdded = false;
+        String readQuestion;
+
+        while (scanner.hasNextLine()) {
+            readQuestion = scanner.nextLine();
+
+            // if the question bank is empty, overwrite it with the new question
+            // else just write what has been read back into temp file
+
+            if ((readQuestion.startsWith(questionBankID)) && (readQuestion.contains(";;;;;;;;;;"))){
+                bufferedWriter.write(this.toString());
+                questionAdded = true;
+
+            } else {
+                bufferedWriter.write(readQuestion);
+            }
+        }
+
+        // if the question has not been added after reading the file, append the question
+        if (!questionAdded){
+            bufferedWriter.append(this.toString());
+            questionAdded = true;
+        }
         bufferedWriter.close();
         fileWriter.close();
+
+        if (questionAdded){
         System.out.println("New question saved");
+        } else {
+            System.out.println("New question failed to save to file");
+        }
+        // rename file
+        File tempFile = new File(tempFilename);
+        File oldFile = new File(filename);
+        oldFile.delete();
+        tempFile.renameTo(oldFile);
     }
 
     public String toString() {
@@ -67,7 +105,8 @@ abstract class Question {
         for (String possibleAnswers : possibleAnswers){
             answers = answers + "," + possibleAnswers;
         }
-        String output = questionBankID + ";;" + questionType + ";;" + questionText + ";;" + answers + ";;" + answerIndex + ";;\n";
+        String output = questionBankID + ";;" + questionType + ";;" + questionText
+                        + ";;" + answers + ";;" + answerIndex + ";;\n";
         return output;
     }
 

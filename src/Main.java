@@ -68,18 +68,15 @@ public class Main {
                         System.out.println("Invalid question bank identifier");
 
                     } else if (validIDs) {
-                        System.out.println("""
-                                 Select a question type\s
-                                  1 - Single answer\s
-                                  2 - Fill-the-blanks\s
-                                """);
+                        System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks");
                         int inpQuestionType = userInp.nextInt();
                         userInp.nextLine();
 
                         switch (inpQuestionType) {
                             case 1:
                                 // single answer
-                                SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID, "SingleAnswer");
+                                SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
+                                                                        "SingleAnswer");
                                 singleAnswerQuestion.setQuestionType("SingleAnswer");
                                 singleAnswerQuestion.addQuestion();
 
@@ -192,16 +189,11 @@ public class Main {
      * outputs the menu
      */
     public void printMenu() {
-        System.out.println("""
-                Select an option\s
-                 1 - Add empty question bank\s
-                 2 - Add question\s
-                 3 - Show question banks\s
-                 4 - Show questions\s
-                 5 - Delete question bank\s
-                 6 - Delete question\s
-                 7 - Take quiz
-                 8 - Exit""");
+        System.out.println("Select an option \n " +
+                "1 - Add empty question bank \n 2 - Add question \n " +
+                "3 - Show question banks \n 4 - Show questions \n " +
+                "5 - Delete question bank \n 6 - Delete question \n " +
+                "7 - Take quiz \n 8 - Exit \n");
     }
 
     /**
