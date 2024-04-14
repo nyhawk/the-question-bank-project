@@ -78,6 +78,4 @@ abstract class Question {
     public void setQuestionType(String questionType){
         this.questionType = questionType;
     }
-
-    }
-
+}
