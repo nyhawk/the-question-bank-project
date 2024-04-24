@@ -13,8 +13,7 @@ import java.util.Scanner;
 public class Module {
     private String moduleID;
     private ArrayList<String> questionBanks;
-    private FileReader fileReader;
-    private Scanner scanner;
+        private Scanner scanner;
 
     /**
      * constructor for Module
@@ -32,7 +31,6 @@ public class Module {
      * @param questionBankID is the question bank unique identifier
      */
     public void addQuestionBank(String questionBankID) {
-
         questionBanks.add(questionBankID);
     }
 
@@ -43,17 +41,17 @@ public class Module {
      */
     public void removeQuestionBank(String questionBankID, String filename) throws IOException {
         // remove from questionBanks list
+        FileReader fileReader = new FileReader(filename);
+        scanner = new Scanner(fileReader);
+        scanner.useDelimiter(";;"); // separator
+
         for (int i = 0; i < questionBanks.size(); i++) {
             if (questionBanks.get(i).equals(questionBankID)) {
                 // check if empty by reading file
-                fileReader = new FileReader(filename);
-                scanner = new Scanner(fileReader);
-                scanner.useDelimiter(";;"); // separator
-
                 while (scanner.hasNextLine()) {
                     String readID = scanner.next();
                     scanner.nextLine();
-                    if (!(questionBankID.contains(readID))) {
+                    if (!(questionBankID.equalsIgnoreCase(readID))) {
                         questionBanks.remove(i);
                     } else {
                         System.out.println("Question bank is not empty so cannot be deleted");
@@ -61,6 +59,7 @@ public class Module {
                 }
             }
         }
+        fileReader.close();
     }
 //        /**
 //         * get module identifier
@@ -78,22 +77,33 @@ public class Module {
         this.moduleID = newModuleID;
     }
 
-    public void loadQuestionBanks (String filename) throws FileNotFoundException {
-        fileReader = new FileReader(filename);
-        scanner = new Scanner(fileReader);
-        scanner.useDelimiter(";;"); // separator
+    public void loadQuestionBanks (String filename) throws IOException {
+        try {
+                FileReader fileReader = new FileReader(filename);
+                scanner = new Scanner(fileReader);
+                scanner.useDelimiter(";;"); // separator
 
-        while (scanner.hasNextLine()) {
-            String readID = scanner.next();
-            String separateIDs[] = readID.split(":");
-            String readModuleID = separateIDs[0];
+                while (scanner.hasNextLine()) {
+                    String readLine = scanner.nextLine();
+                    if ((!readLine.isEmpty() && (!readLine.equals("\n")))){
+                        int index = readLine.indexOf(";;");
 
-            scanner.nextLine();
-            if (!(questionBanks.contains(readID))) {
-                this.addQuestionBank(readID);
-            }
-        }
-        showQuestionBanks();
+                        String readID = readLine.substring(0, index);
+                        String separateIDs[] = readID.split(":");
+                        String readModuleID = separateIDs[0];
+
+                       // scanner.nextLine();
+                        if (!(questionBanks.contains(readModuleID))) {
+                            this.addQuestionBank(readID);
+                        }
+                    }
+                }
+
+                fileReader.close();
+            } catch (FileNotFoundException e){
+                System.err.println(e.getMessage());
+
+}
     }
 
     public void showQuestionBanks () {
@@ -105,10 +115,26 @@ public class Module {
     public void writeBankToFile(String filename, String questionBankID) throws IOException {
         FileWriter fileWriter = new FileWriter(filename, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        FileReader fileReader = new FileReader(filename);
+        Scanner scanner = new Scanner(fileReader);
+        scanner.useDelimiter(";;"); // separator
 
+        String readQuestion;
+
+        // check the module is not already in the file
+        while (scanner.hasNextLine()) {
+            readQuestion = scanner.nextLine();
+
+            if (readQuestion.startsWith(questionBankID)) {
+                System.out.println("Module already saved");
+                return;
+            }
+        }
+
+        // if no instances of module found, add the module
         bufferedWriter.write(questionBankID + ";;;;;;;;;;" + "\n");
         bufferedWriter.close();
         fileWriter.close();
-        System.out.println("New question saved");
+        System.out.println("New question bank saved");
     }
 }

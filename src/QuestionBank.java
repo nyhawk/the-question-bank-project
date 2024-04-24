@@ -45,7 +45,7 @@ public class QuestionBank {
         int counter = 1;
         while (scanner.hasNext()) {
             String readID = scanner.next();
-            if (!readID.isEmpty()) {
+            if ((!readID.isEmpty()) && (!readID.equals("\n"))){
                 String readType = scanner.next();
                 String readQuestionText = scanner.next();
                 String readAnswers = scanner.next();
@@ -53,16 +53,18 @@ public class QuestionBank {
 
                 if (readID.equals(questionBankID)) {
                     System.out.println("Question " + counter++);
-                    if (readType.equals("SingleAnswer")) {
-                        SingleAnswer newQuestion = new SingleAnswer(readID, readType);
+
+                    QuestionType typeToEnum = QuestionType.valueOf(readType);
+                    if (typeToEnum == QuestionType.SINGLE_ANSWER) {
+                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER);
                         newQuestion.setQuestionText(readQuestionText);
                         newQuestion.setPossibleAnswers(readAnswers);
                         newQuestion.setAnswerIndex(readAnswerIndex);
                         newQuestion.showQuestion();
                         this.addQuestion(newQuestion);
 
-                    } else if (readType.equals("FillBlanks")) {
-                        FillBlanks newQuestion = new FillBlanks(readID, readType);
+                    } else if (typeToEnum == QuestionType.FILL_BLANKS) {
+                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS);
                         newQuestion.setQuestionText(readQuestionText);
                         newQuestion.setPossibleAnswers(readAnswers);
                         newQuestion.setAnswerIndex(readAnswerIndex);
@@ -71,6 +73,7 @@ public class QuestionBank {
                     }
                 }
                 scanner.nextLine();
+                System.out.println(); // so questions have a space between them
             }
         }
         scanner.close();
@@ -93,7 +96,7 @@ public class QuestionBank {
             readQuestion = scanner.nextLine();
 
             // scanner.nextLine();
-            if (!(readQuestion.startsWith(questionBankID))) {
+            if ((readQuestion.startsWith(questionBankID))) {
                 if (counter == (questionIndex)) {
                     // modify the question so only ID stored to preserve the question bank in the file
                     int splitLocation = readQuestion.indexOf(";;");

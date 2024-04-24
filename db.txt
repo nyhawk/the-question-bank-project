@@ -1,9 +1,2 @@
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;
-1:1;;;;;;;;;;
-1:2;;FillBlanks;;this has [blank];;a blank;;0;;
-1:2;;SingleAnswer;;testing new format;;w,e,r,t,y;;3;;
-1:1;;;;;;;;;;
-1:1;;SingleAnswer;;efgh;;,e,f,g,h;;1;;
-1:2;;SingleAnswer;;wert;;,w,e,r,t;;2;;
+1:1;;SingleAnswer;;abc;;[a, b, c];;1;;
+

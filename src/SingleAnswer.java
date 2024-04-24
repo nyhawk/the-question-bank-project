@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class SingleAnswer extends Question {
 
-    public SingleAnswer(String questionBankID, String questionType) {
+    public SingleAnswer(String questionBankID, QuestionType questionType) {
         super(questionBankID, questionType);
         possibleAnswers = new ArrayList<>();
     }
@@ -18,33 +18,28 @@ public class SingleAnswer extends Question {
     }
 
     public void addQuestion() {
-        SingleAnswer newQuestion = new SingleAnswer(questionBankID, questionType);
-
         System.out.println("Enter the question");
-        newQuestion.setQuestionText(userInp.nextLine());
+        this.setQuestionText(userInp.nextLine());
 
         System.out.println("Enter an option, or 'q' when all options entered");
         String inpString = userInp.nextLine();
         while (!inpString.equalsIgnoreCase("q")){
-            newQuestion.addAnswer(inpString);
+            this.possibleAnswers.add(inpString);
             inpString = userInp.nextLine();
         }
 
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
-        newQuestion.showQuestion();
-        newQuestion.setAnswerIndex(userInp.nextInt()-1);
+        this.showQuestion();
+        this.setAnswerIndex(userInp.nextInt()-1);
         userInp.nextLine();
 
         // save question to file
         try {
-            newQuestion.writeQuestionToFile("db.txt");
+            this.writeQuestionToFile("db.txt");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
-    public void addAnswer(String answer) {
-        possibleAnswers.add(answer);
-    }
 }

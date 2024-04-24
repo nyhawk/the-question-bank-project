@@ -44,13 +44,13 @@ public class Main {
                         Module newModule = new Module(inpModuleID);
                         newModule.addQuestionBank(questionBankID);
                         modules.add(newModule);
-                        System.out.println("New question bank added");
+
                         try {
                             newModule.writeBankToFile("db.txt", questionBankID);
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            System.err.println(e.getMessage());
                         }
-                    } else if (!validIDs) {
+                    } else {
                         System.out.println("Invalid question bank identifier inputted");
                     }
                     break;
@@ -64,36 +64,32 @@ public class Main {
 
                     // validate id
                     validIDs = checkID(questionBankID);
-                    if (!validIDs) {
-                        System.out.println("Invalid question bank identifier");
-
-                    } else if (validIDs) {
-                        System.out.println("""
-                                 Select a question type\s
-                                  1 - Single answer\s
-                                  2 - Fill-the-blanks\s
-                                """);
+                    if (validIDs) {
+                        System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks");
                         int inpQuestionType = userInp.nextInt();
                         userInp.nextLine();
 
                         switch (inpQuestionType) {
                             case 1:
                                 // single answer
-                                SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID, "SingleAnswer");
-                                singleAnswerQuestion.setQuestionType("SingleAnswer");
+                                SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
+                                        QuestionType.SINGLE_ANSWER);
+                                singleAnswerQuestion.setQuestionType(QuestionType.SINGLE_ANSWER);
                                 singleAnswerQuestion.addQuestion();
 
                                 break;
                             case 2:
                                 // fill-the-blanks
                                 FillBlanks fillBlanksQuestion;
-                                fillBlanksQuestion = new FillBlanks(questionBankID, "FillBlanks");
-                                fillBlanksQuestion.setQuestionType("FillBlanks");
+                                fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
+                                fillBlanksQuestion.setQuestionType(QuestionType.FILL_BLANKS);
                                 fillBlanksQuestion.addQuestion();
                                 break;
                             default:
                                 System.out.println("Invalid question type");
                         }
+                    } else {
+                        System.out.println("Invalid question bank identifier");
                     }
 
                     break;
@@ -106,8 +102,10 @@ public class Main {
                         Module newModule = new Module(moduleID);
                         try {
                             newModule.loadQuestionBanks("db.txt");
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
+                            newModule.showQuestionBanks();
+
+                        } catch (IOException e) {
+                            System.err.println(e.getMessage());
                         }
                     }
                     break;
@@ -115,14 +113,18 @@ public class Main {
                 case 4:
                     // show questions
                     System.out.println("Input the question bank identifier");
-
-                    bank = new QuestionBank(userInp.nextLine());
-                    try {
-                        bank.loadFile("db.txt");
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
+                    questionBankID = userInp.nextLine();
+                    validIDs = checkID(questionBankID);
+                    if (validIDs) {
+                        bank = new QuestionBank(questionBankID);
+                        try {
+                            bank.loadFile("db.txt");
+                        } catch (FileNotFoundException e) {
+                            System.err.println(e.getMessage());
+                        }
+                    } else{
+                        System.out.println("Invalid question bank identifier");
                     }
-
                     break;
 
                 case 5:
@@ -133,21 +135,17 @@ public class Main {
 
                     //validate identifier
                     validIDs = checkID(questionBankID);
-                    if (validIDs==true) {
-                        Module deleteBank = new Module(questionBankID);
+                    String separateIDs[] = questionBankID.split(":");
+                    if (validIDs) {
+                        Module deleteBank = new Module(separateIDs[0]);
 
                         // load the module's question banks
                         try {
                             deleteBank.loadQuestionBanks("db.txt");
-                        } catch (IOException e){
-                            throw new RuntimeException(e);
-                        }
-                        try {
                             deleteBank.removeQuestionBank(questionBankID, "db.txt");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        } catch (IOException e){
+                            System.err.println(e.getMessage());
                         }
-
                     } else {
                         System.out.println("Invalid question bank identifier inputted");
                     }
@@ -164,7 +162,7 @@ public class Main {
                         try {
                             bank.removeQuestion("db.txt", questionIndex);
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            System.err.println(e.getMessage());
                         }
                     } else {
                         System.out.println("View a question bank's questions in option 4 before deleting");
@@ -192,16 +190,11 @@ public class Main {
      * outputs the menu
      */
     public void printMenu() {
-        System.out.println("""
-                Select an option\s
-                 1 - Add empty question bank\s
-                 2 - Add question\s
-                 3 - Show question banks\s
-                 4 - Show questions\s
-                 5 - Delete question bank\s
-                 6 - Delete question\s
-                 7 - Take quiz
-                 8 - Exit""");
+        System.out.println("\n Select an option \n " +
+                "1 - Add empty question bank \n 2 - Add question \n " +
+                "3 - Show question banks \n 4 - Show questions \n " +
+                "5 - Delete question bank \n 6 - Delete question \n " +
+                "7 - Take quiz \n 8 - Exit \n");
     }
 
     /**
