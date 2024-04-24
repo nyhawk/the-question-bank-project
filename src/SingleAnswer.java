@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class SingleAnswer extends Question {
 
-    public SingleAnswer(String questionBankID, String questionType) {
+    public SingleAnswer(String questionBankID, QuestionType questionType) {
         super(questionBankID, questionType);
         possibleAnswers = new ArrayList<>();
     }
@@ -24,7 +24,7 @@ public class SingleAnswer extends Question {
         System.out.println("Enter an option, or 'q' when all options entered");
         String inpString = userInp.nextLine();
         while (!inpString.equalsIgnoreCase("q")){
-            this.addAnswer(inpString);
+            this.possibleAnswers.add(inpString);
             inpString = userInp.nextLine();
         }
 
@@ -38,11 +38,8 @@ public class SingleAnswer extends Question {
         try {
             this.writeQuestionToFile("db.txt");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
-    public void addAnswer(String answer) {
-        possibleAnswers.add(answer);
-    }
 }

@@ -1,5 +1,2 @@
-CS12320:0004;;;;;;;;;;
-CS12320:0004;;;;;;;;;;
-CS12320:0004;;;;;;;;;;
 CS12320:0004;;SingleAnswer;;In OOP, what is a method?;;,A variable that stores data in an object,A function that performs an action,A type of loop,A keyword to define classes;;1;;
 CS12320:0004;;FillBlanks;;In OOP, {{blank}} is the ability of a class to adopt the attributes and behaviours of another class;;,inheritance;;0;;

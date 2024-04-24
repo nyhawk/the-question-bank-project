@@ -3,21 +3,20 @@ import java.util.ArrayList;
 
 public class FillBlanks extends Question{
 
-    public FillBlanks(String questionBankID, String questionType){
+    public FillBlanks(String questionBankID, QuestionType questionType){
         super(questionBankID, questionType);
         possibleAnswers = new ArrayList<>();
     }
 
     public void setBlank(String blank) {
-        possibleAnswers.addFirst(blank);
-        super.setAnswerIndex(0);
+
     }
 //
 //    public String getBlank() {
 //        return blank;
 //    }
-
-    public void outputQuestion(){
+@Override
+    public void showQuestion(){
         String question = super.getQuestionText().replace("{{blank}}","_____");
         System.out.println("Fill in the blank: ");
         System.out.println(question);
@@ -25,19 +24,25 @@ public class FillBlanks extends Question{
 
 
     public void addQuestion(){
-        FillBlanks newQuestion = new FillBlanks(questionBankID, questionType);
+        FillBlanks newQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
+        String inpQuestion;
+        do {
+            System.out.println("Enter the question, notating the location of the blank with {{blank}}");
+            inpQuestion = userInp.nextLine();
+            newQuestion.setQuestionText(inpQuestion);
+        } while (!inpQuestion.contains("{{blank}}"));
 
-        System.out.println("Enter the question, notating the location of the blank with {{blank}}");
-        newQuestion.setQuestionText(userInp.nextLine());
+
 
         System.out.println("Enter the missing text");
-        newQuestion.setBlank(userInp.nextLine());
+        possibleAnswers.addFirst(userInp.nextLine());
+        super.setAnswerIndex(0);
 
         // save question to file
         try {
             newQuestion.writeQuestionToFile("db.txt");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
     }

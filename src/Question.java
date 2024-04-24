@@ -14,12 +14,12 @@ abstract class Question {
 
     int answerIndex;
 
-    String questionType;
+    QuestionType questionType;
 
     /**
      * constructor for Question class
      */
-    public Question(String newQuestionBankID, String newQuestionType) {
+    public Question(String newQuestionBankID, QuestionType newQuestionType) {
         questionBankID = newQuestionBankID;
         questionType = newQuestionType;
 
@@ -39,7 +39,7 @@ abstract class Question {
     }
 
     public void setPossibleAnswers(String answers){
-        String answersFromFile[] = answers.split(",");
+        String answersFromFile[] = answers.substring(1, (answers.length()-1)).split(", ");
         possibleAnswers.addAll(Arrays.asList(answersFromFile));
     }
 
@@ -65,28 +65,32 @@ abstract class Question {
         boolean questionAdded = false;
         String readQuestion;
 
+
         while (scanner.hasNextLine()) {
             readQuestion = scanner.nextLine();
 
             // if the question bank is empty, overwrite it with the new question
             // else just write what has been read back into temp file
 
-            if ((readQuestion.startsWith(questionBankID)) && (readQuestion.contains(";;;;;;;;;;"))){
-                bufferedWriter.write(this.toString());
+            if ((readQuestion.startsWith(questionBankID)) && (readQuestion.contains(";;;;;;;;;;"))) {
+                bufferedWriter.write(this.toString() + "\n");
                 questionAdded = true;
 
             } else {
-                bufferedWriter.write(readQuestion);
+                bufferedWriter.write(readQuestion + "\n");
             }
         }
 
         // if the question has not been added after reading the file, append the question
-        if (!questionAdded){
+        if (!questionAdded) {
             bufferedWriter.append(this.toString());
             questionAdded = true;
         }
+
         bufferedWriter.close();
         fileWriter.close();
+        fileReader.close();
+        scanner.close();
 
         if (questionAdded){
         System.out.println("New question saved");
@@ -96,17 +100,31 @@ abstract class Question {
         // rename file
         File tempFile = new File(tempFilename);
         File oldFile = new File(filename);
-        oldFile.delete();
-        tempFile.renameTo(oldFile);
+
+        if (oldFile.exists()) {
+            if (oldFile.delete()) {
+                if (tempFile.renameTo(oldFile)) {
+                    System.out.println("File renamed successfully");
+                } else {
+                    System.out.println("Failed to rename file");
+                }
+            } else {
+                System.out.println("Failed to delete old file");
+            }
+        } else {
+            System.out.println("Old file does not exist");
+        }
+
     }
 
     public String toString() {
         String answers = "";
-        for (String possibleAnswers : possibleAnswers){
-            answers = answers + "," + possibleAnswers;
-        }
+//        for (String possibleAnswers : possibleAnswers){
+//            // extra comma here when nothing in answers
+//            answers = answers + "," + possibleAnswers;
+//        }
         String output = questionBankID + ";;" + questionType + ";;" + questionText
-                        + ";;" + answers + ";;" + answerIndex + ";;\n";
+                        + ";;" + possibleAnswers + ";;" + answerIndex + ";;\n";
         return output;
     }
 
@@ -114,7 +132,7 @@ abstract class Question {
         answerIndex = newAnswerIndex;
     }
 
-    public void setQuestionType(String questionType){
+    public void setQuestionType(QuestionType questionType){
         this.questionType = questionType;
     }
 }
