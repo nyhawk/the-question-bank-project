@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class QuestionBank {
@@ -36,7 +37,80 @@ public class QuestionBank {
     }
 
     public void takeQuiz() {
+        // randomise question order
+        Collections.shuffle(questions);
+
+        int total = 0;
+
+        QuestionType currentType;
+
+        ArrayList<String> userAnswers = new ArrayList<>();
+        int questionIndex = 0;
+
+        String inpString = scanner.nextLine();
+        int inpInt;
+
+        while (true){
+            /* navigate questions
+             b - back
+             n - next
+             s - submit
+             q - quit
+            */
+            if ((inpString.equalsIgnoreCase("b") && (questionIndex > 0))){
+              questionIndex--;
+
+            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex < questions.size())){
+              questionIndex++;
+
+            } else if (inpString.equalsIgnoreCase("q")){
+              break;
+
+            } else if (inpString.equalsIgnoreCase("s")){
+                showResults(total, questions.size(), userAnswers);
+            }
+
+            // get and output the question
+            currentType = questions.get(questionIndex).questionType;
+            if (currentType==QuestionType.SINGLE_ANSWER){
+              SingleAnswer question = new SingleAnswer(questions.get(questionIndex).questionBankID, currentType,
+                                                        questions.get(questionIndex).questionText,
+                                                        questions.get(questionIndex).possibleAnswers,
+                                                        questions.get(questionIndex).answerIndex);
+              question.showQuestion(questionIndex+1);
+              System.out.println("Your answer: " + userAnswers.get(questionIndex));
+              inpInt = scanner.nextInt();
+              userAnswers.add(questionIndex, String.valueOf(inpInt));
+              question.checkAnswer(inpInt, total);
+
+            } else if (currentType==QuestionType.FILL_BLANKS){
+              FillBlanks question = new FillBlanks(questions.get(questionIndex).questionBankID, currentType,
+                                                    questions.get(questionIndex).questionText,
+                                                    questions.get(questionIndex).possibleAnswers,
+                                                    questions.get(questionIndex).answerIndex);
+              question.showQuestion(questionIndex+1);
+              System.out.println("Your answer: " + userAnswers.get(questionIndex));
+              inpString = scanner.nextLine();
+              userAnswers.add(questionIndex, inpString);
+              question.checkAnswer(inpString, total);
+            }
+        }
     }
+
+    private void showResults(int score, int totalQuestions, ArrayList<String> answers) {
+        float percentage = (score/totalQuestions) * 100;
+        int unansweredCount = 0;
+        for (String answer : answers) {
+            if (answer.isEmpty()) {
+                unansweredCount++;
+            }
+        }
+
+        System.out.println("You scored " + score + " on this quiz, which is " + percentage + "%");
+        System.out.println("You have " + unansweredCount + " unanswered questions, " +
+                            "out of a total of " + totalQuestions + " questions");
+    }
+
 
     public void loadFile(String filename) throws FileNotFoundException {
         fileReader = new FileReader(filename);
@@ -56,20 +130,14 @@ public class QuestionBank {
 
                     QuestionType typeToEnum = QuestionType.valueOf(readType);
                     if (typeToEnum == QuestionType.SINGLE_ANSWER) {
-                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER);
-                        newQuestion.setQuestionText(readQuestionText);
+                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
                         newQuestion.setPossibleAnswers(readAnswers);
-                        newQuestion.setAnswerIndex(readAnswerIndex);
-                        newQuestion.showQuestion();
                         this.addQuestion(newQuestion);
 
                     } else if (typeToEnum == QuestionType.FILL_BLANKS) {
-                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS);
-                        newQuestion.setQuestionText(readQuestionText);
+                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS, readQuestionText, readAnswerIndex);
                         newQuestion.setPossibleAnswers(readAnswers);
-                        newQuestion.setAnswerIndex(readAnswerIndex);
                         this.addQuestion(newQuestion);
-                        newQuestion.showQuestion();
                     }
                 }
                 scanner.nextLine();
@@ -119,5 +187,13 @@ public class QuestionBank {
         oldFile.delete();
         tempFile.renameTo(oldFile);
 
+    }
+
+    public void showAllQuestions(){
+        int questionNum = 1;
+        for (Question question : questions) {
+            question.showQuestion(questionNum);
+            questionNum++;
+        }
     }
 }

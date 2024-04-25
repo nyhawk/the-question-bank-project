@@ -16,10 +16,11 @@ public class Main {
      */
     public void runApp() {
         System.out.println("********** The Question Bank **********");
-        int menuOpt;
-        boolean validIDs;
-        String questionBankID;
+        int menuOpt = 0;
+        boolean validIDs = false;
+        String questionBankID = null;
         QuestionBank bank = null;
+        String moduleID = null;
 
         do {
             printMenu();
@@ -97,7 +98,7 @@ public class Main {
                 case 3:
                     // show question banks
                     System.out.println("Input module identifier");
-                    String moduleID = userInp.nextLine();
+                    moduleID = userInp.nextLine();
                     if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
                         Module newModule = new Module(moduleID);
                         try {
@@ -119,6 +120,7 @@ public class Main {
                         bank = new QuestionBank(questionBankID);
                         try {
                             bank.loadFile("db.txt");
+                            bank.showAllQuestions();
                         } catch (FileNotFoundException e) {
                             System.err.println(e.getMessage());
                         }
@@ -141,7 +143,7 @@ public class Main {
 
                         // load the module's question banks
                         try {
-                            deleteBank.loadQuestionBanks("db.txt");
+//                            deleteBank.loadQuestionBanks("db.txt");
                             deleteBank.removeQuestionBank(questionBankID, "db.txt");
                         } catch (IOException e){
                             System.err.println(e.getMessage());
@@ -171,7 +173,62 @@ public class Main {
 
                 case 7:
                     // take quiz
-                    System.out.println("This menu option has not been programmed yet!");
+                    System.out.println("Select an option to take a quiz \n 1. View question banks \n 2. Input question bank");
+                    int choice = userInp.nextInt();
+                    switch (choice){
+                        case 1:
+                            // output question banks
+                            System.out.println("Input module identifier");
+                            moduleID = userInp.nextLine();
+                            if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
+                                Module newModule = new Module(moduleID);
+                                try {
+                                    newModule.loadQuestionBanks("db.txt");
+                                    newModule.showQuestionBanks();
+
+                                    System.out.println("Input the question bank identifier");
+                                    // get user input
+                                    System.out.println("Input the question bank identifier");
+                                    questionBankID = userInp.nextLine();
+                                    validIDs = checkID(questionBankID);
+
+                                    if (validIDs) {
+                                        bank = new QuestionBank(questionBankID);
+                                        bank.loadFile("db.txt");
+                                        bank.takeQuiz();
+
+                                    } else{
+                                        System.out.println("Invalid question bank identifier");
+                                    }
+
+                                } catch (IOException e) {
+                                    System.err.println(e.getMessage());
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            // get user input
+                            System.out.println("Input the question bank identifier");
+                            questionBankID = userInp.nextLine();
+                            validIDs = checkID(questionBankID);
+                            if (validIDs) {
+                                bank = new QuestionBank(questionBankID);
+                                try {
+                                    bank.loadFile("db.txt");
+                                    bank.takeQuiz();
+                                } catch (FileNotFoundException e) {
+                                    System.err.println(e.getMessage());
+                                }
+                            } else{
+                                System.out.println("Invalid question bank identifier");
+                            }
+                            break;
+
+                        default:
+                            System.out.println("Invalid option");
+                    }
+
                     break;
 
                 case 8:
@@ -236,6 +293,4 @@ public class Main {
         Main app = new Main();
         app.runApp();
     }
-
-
 }

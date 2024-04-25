@@ -8,11 +8,26 @@ public class SingleAnswer extends Question {
         possibleAnswers = new ArrayList<>();
     }
 
-    public void showQuestion() {
-        super.showQuestion();
-        int questionNum = 1;
+    public SingleAnswer(String questionBankID, QuestionType questionType, String questionText, ArrayList<String> allAnswers, int answerIndex) {
+        super(questionBankID, questionType);
+        super.questionText = questionText;
+        super.answerIndex = answerIndex;
+        possibleAnswers = new ArrayList<>();
+        possibleAnswers.addAll(allAnswers);
+    }
+
+    public SingleAnswer(String questionBankID, QuestionType questionType, String questionText, int answerIndex) {
+        super(questionBankID, questionType);
+        super.questionText = questionText;
+        super.answerIndex = answerIndex;
+        possibleAnswers = new ArrayList<>();
+    }
+
+    public void showQuestion(int questionNum) {
+        super.showQuestion(questionNum);
+        int answerNum = 1;
         for (String possibleAnswer : this.possibleAnswers) {
-            System.out.println(questionNum++ + ". " + possibleAnswer);
+            System.out.println(answerNum++ + ". " + possibleAnswer);
 
         }
     }
@@ -30,7 +45,7 @@ public class SingleAnswer extends Question {
 
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
-        this.showQuestion();
+        this.showQuestion(1);
         this.setAnswerIndex(userInp.nextInt()-1);
         userInp.nextLine();
 
@@ -40,6 +55,13 @@ public class SingleAnswer extends Question {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public int checkAnswer(int userAnswer, int total){
+        if (answerIndex == userAnswer){
+            total++;
+        }
+        return total;
     }
 
 }
