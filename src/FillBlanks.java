@@ -8,6 +8,21 @@ public class FillBlanks extends Question{
         possibleAnswers = new ArrayList<>();
     }
 
+    public FillBlanks(String questionBankID, QuestionType questionType, String questionText, int answerIndex) {
+        super(questionBankID, questionType);
+        super.questionText = questionText;
+        super.answerIndex = answerIndex;
+        possibleAnswers = new ArrayList<>();
+    }
+
+    public FillBlanks(String questionBankID, QuestionType questionType, String questionText, ArrayList<String> allAnswers, int answerIndex) {
+        super(questionBankID, questionType);
+        super.questionText = questionText;
+        super.answerIndex = answerIndex;
+        possibleAnswers = new ArrayList<>();
+        possibleAnswers.addAll(allAnswers);
+    }
+
     public void setBlank(String blank) {
 
     }
@@ -16,8 +31,9 @@ public class FillBlanks extends Question{
 //        return blank;
 //    }
 @Override
-    public void showQuestion(){
+    public void showQuestion(int questionNum){
         String question = super.getQuestionText().replace("{{blank}}","_____");
+        System.out.println("Question "+questionNum + "\n");
         System.out.println("Fill in the blank: ");
         System.out.println(question);
     }
@@ -45,5 +61,12 @@ public class FillBlanks extends Question{
             System.err.println(e.getMessage());
         }
 
+    }
+
+    public int checkAnswer(String userAnswer, int total){
+        if (possibleAnswers.getFirst().equalsIgnoreCase(userAnswer)){
+            total++;
+        }
+        return total;
     }
 }

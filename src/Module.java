@@ -61,21 +61,6 @@ public class Module {
         }
         fileReader.close();
     }
-//        /**
-//         * get module identifier
-//         * @return module identifier
-//         */
-    public String getModuleID() {
-        return this.moduleID;
-    }
-
-    /**
-     * update moduleID
-     * @param newModuleID is the new identifier for the module object
-     */
-    public void setModuleID (String newModuleID){
-        this.moduleID = newModuleID;
-    }
 
     public void loadQuestionBanks (String filename) throws IOException {
         try {

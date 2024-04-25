@@ -44,12 +44,12 @@ abstract class Question {
     }
 
     public void checkAnswer() {
-
+        // make this an interface????
     }
 
 
-    public void showQuestion() {
-        System.out.println(questionText);
+    public void showQuestion(int questionNum) {
+        System.out.println("Question " + questionNum + "\n" + questionText);
     }
 
     public void writeQuestionToFile(String filename) throws IOException {
