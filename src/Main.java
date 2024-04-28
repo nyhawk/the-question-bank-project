@@ -15,14 +15,15 @@ public class Main {
      * runs the program
      */
     public void runApp() {
-        System.out.println("********** The Question Bank **********");
-        int menuOpt = 0;
-        boolean validIDs = false;
-        String questionBankID = null;
+        int menuOpt;
+        boolean validIDs;
+        String questionBankID;
         QuestionBank bank = null;
-        String moduleID = null;
+        String moduleID;
 
-        do {
+        System.out.println("********** The Question Bank **********");
+
+        while (true) {
             printMenu();
             menuOpt = userInp.nextInt();
             userInp.nextLine();
@@ -43,9 +44,10 @@ public class Main {
 
                         // save relationship between module and question bank
                         Module newModule = new Module(inpModuleID);
-                        newModule.addQuestionBank(questionBankID);
+                        newModule.questionBanks.add(questionBankID);
                         modules.add(newModule);
 
+                        // write new bank to database
                         try {
                             newModule.writeBankToFile("db.txt", questionBankID);
                         } catch (IOException e) {
@@ -66,16 +68,17 @@ public class Main {
                     // validate id
                     validIDs = checkID(questionBankID);
                     if (validIDs) {
+                        // get question type
                         System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks");
                         int inpQuestionType = userInp.nextInt();
                         userInp.nextLine();
 
+                        // add question
                         switch (inpQuestionType) {
                             case 1:
                                 // single answer
                                 SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
                                         QuestionType.SINGLE_ANSWER);
-                                singleAnswerQuestion.setQuestionType(QuestionType.SINGLE_ANSWER);
                                 singleAnswerQuestion.addQuestion();
 
                                 break;
@@ -83,7 +86,6 @@ public class Main {
                                 // fill-the-blanks
                                 FillBlanks fillBlanksQuestion;
                                 fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
-                                fillBlanksQuestion.setQuestionType(QuestionType.FILL_BLANKS);
                                 fillBlanksQuestion.addQuestion();
                                 break;
                             default:
@@ -99,10 +101,15 @@ public class Main {
                     // show question banks
                     System.out.println("Input module identifier");
                     moduleID = userInp.nextLine();
+
+                    // validate module identifier
                     if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
                         Module newModule = new Module(moduleID);
                         try {
+                            // get question banks from file
                             newModule.loadQuestionBanks("db.txt");
+
+                            // once banks found, output them
                             newModule.showQuestionBanks();
 
                         } catch (IOException e) {
@@ -113,13 +120,19 @@ public class Main {
 
                 case 4:
                     // show questions
+                    // get question bank id
                     System.out.println("Input the question bank identifier");
                     questionBankID = userInp.nextLine();
+
+                    // validate id
                     validIDs = checkID(questionBankID);
                     if (validIDs) {
                         bank = new QuestionBank(questionBankID);
                         try {
+                            // find questions in database
                             bank.loadFile("db.txt");
+
+                            // show questions loaded from database
                             bank.showAllQuestions();
                         } catch (FileNotFoundException e) {
                             System.err.println(e.getMessage());
@@ -131,19 +144,19 @@ public class Main {
 
                 case 5:
                     // delete question bank
-                    System.out.println("Input the question bank identifier of the question bank to be deleted");
 
+                    // get question bank ID
+                    System.out.println("Input the question bank identifier of the question bank to be deleted");
                     questionBankID = userInp.nextLine();
 
                     //validate identifier
                     validIDs = checkID(questionBankID);
-                    String separateIDs[] = questionBankID.split(":");
+                    String[] separateIDs = questionBankID.split(":");
                     if (validIDs) {
                         Module deleteBank = new Module(separateIDs[0]);
 
-                        // load the module's question banks
+                        // delete bank
                         try {
-//                            deleteBank.loadQuestionBanks("db.txt");
                             deleteBank.removeQuestionBank(questionBankID, "db.txt");
                         } catch (IOException e){
                             System.err.println(e.getMessage());
@@ -157,9 +170,10 @@ public class Main {
                 case 6:
                     // delete question
                     System.out.println("Input the index of the question to be deleted, " +
-                            "displayed next to the question when all questions shown (menu option 4)");
+                                     "displayed next to the question when all questions shown (menu option 4)");
                     int questionIndex = userInp.nextInt();
 
+                    // user must have seen all question banks to find the question number
                     if (bank != null) {
                         try {
                             bank.removeQuestion("db.txt", questionIndex);
@@ -175,27 +189,35 @@ public class Main {
                     // take quiz
                     System.out.println("Select an option to take a quiz \n 1. View question banks \n 2. Input question bank");
                     int choice = userInp.nextInt();
+                    userInp.nextLine();
+
                     switch (choice){
                         case 1:
-                            // output question banks
+                            // take quiz by outputing question banks for a module
                             System.out.println("Input module identifier");
                             moduleID = userInp.nextLine();
+
+                            // validate id
                             if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
                                 Module newModule = new Module(moduleID);
                                 try {
+                                    // get banks from database, and output them
                                     newModule.loadQuestionBanks("db.txt");
                                     newModule.showQuestionBanks();
 
-                                    System.out.println("Input the question bank identifier");
                                     // get user input
                                     System.out.println("Input the question bank identifier");
                                     questionBankID = userInp.nextLine();
-                                    validIDs = checkID(questionBankID);
 
+                                    // validate id
+                                    validIDs = checkID(questionBankID);
                                     if (validIDs) {
+                                        // load the questions for the inputted bank from database
                                         bank = new QuestionBank(questionBankID);
                                         bank.loadFile("db.txt");
-                                        bank.takeQuiz();
+
+                                        // take a quiz using the questions in the question bank, including all questions
+                                        bank.takeQuiz(bank.questions.size()-1);
 
                                     } else{
                                         System.out.println("Invalid question bank identifier");
@@ -208,15 +230,25 @@ public class Main {
                             break;
 
                         case 2:
-                            // get user input
+                            // take quiz by user inputting question bank id and number of questions
+
+                            // get and validate question bank id
                             System.out.println("Input the question bank identifier");
                             questionBankID = userInp.nextLine();
                             validIDs = checkID(questionBankID);
                             if (validIDs) {
                                 bank = new QuestionBank(questionBankID);
                                 try {
+                                    // load the question bank from the database
                                     bank.loadFile("db.txt");
-                                    bank.takeQuiz();
+
+                                    // get the number of questions to show in the quiz
+                                    System.out.println("Enter the number of questions in the quiz");
+                                    int totalQuestions = userInp.nextInt();
+
+                                    // take a quiz
+                                    bank.takeQuiz(totalQuestions);
+
                                 } catch (FileNotFoundException e) {
                                     System.err.println(e.getMessage());
                                 }
@@ -236,11 +268,11 @@ public class Main {
                     System.out.println("Exiting question bank application");
                     System.exit(0);
                     break;
+
                 default:
                     System.out.println("Invalid menu option chosen");
             }
-        } while (menuOpt != 8);
-
+        }
     }
 
     /**

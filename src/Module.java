@@ -5,15 +5,16 @@
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
  * this is the Module class which creates and stores modules with their question banks
  */
 public class Module {
-    private String moduleID;
-    private ArrayList<String> questionBanks;
-        private Scanner scanner;
+    private final String moduleID;
+    ArrayList<String> questionBanks;
+    private Scanner scanner;
 
     /**
      * constructor for Module
@@ -26,18 +27,11 @@ public class Module {
     }
 
     /**
-     * add a new question bank to the module
-     *
-     * @param questionBankID is the question bank unique identifier
-     */
-    public void addQuestionBank(String questionBankID) {
-        questionBanks.add(questionBankID);
-    }
-
-    /**
      * delete empty question bank
      *
-     * @param questionBankID is the question bank unique identifier
+     * @param questionBankID is the question bank unique identifier.
+     * @param filename is the name of the database.
+     * @throws IOException if an I/O error occurs while reading the file
      */
     public void removeQuestionBank(String questionBankID, String filename) throws IOException {
         // remove from questionBanks list
@@ -62,33 +56,39 @@ public class Module {
         fileReader.close();
     }
 
+    /**
+     * loads a module's question banks from the database
+     * @param filename is the name of the database
+     * @throws IOException if an I/O error occurs when reading the file
+     */
     public void loadQuestionBanks (String filename) throws IOException {
         try {
-                FileReader fileReader = new FileReader(filename);
-                scanner = new Scanner(fileReader);
-                scanner.useDelimiter(";;"); // separator
+            FileReader fileReader = new FileReader(filename);
+            scanner = new Scanner(fileReader);
+            scanner.useDelimiter(";;"); // separator
+            ArrayList<String> readBanks = new ArrayList<>();
 
-                while (scanner.hasNextLine()) {
-                    String readLine = scanner.nextLine();
-                    if ((!readLine.isEmpty() && (!readLine.equals("\n")))){
-                        int index = readLine.indexOf(";;");
+            while (scanner.hasNextLine()) {
+                String readLine = scanner.nextLine();
+                if ((!readLine.isEmpty() && (!readLine.equals("\n")))){
+                    int index = readLine.indexOf(";;");
 
-                        String readID = readLine.substring(0, index);
-                        String separateIDs[] = readID.split(":");
-                        String readModuleID = separateIDs[0];
-
-                       // scanner.nextLine();
-                        if (!(questionBanks.contains(readModuleID))) {
-                            this.addQuestionBank(readID);
-                        }
-                    }
+                    String readID = readLine.substring(0, index);
+                    readBanks.add(readID);
                 }
+            }
+            // remove duplicate question banks
+            // HashSet doesn't allow duplicates so removes them
+            HashSet<String> allInstances = new HashSet<>(readBanks);
 
-                fileReader.close();
-            } catch (FileNotFoundException e){
-                System.err.println(e.getMessage());
+            this.questionBanks.clear();
+            this.questionBanks.addAll(allInstances);
 
-}
+            fileReader.close();
+
+        } catch (FileNotFoundException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     public void showQuestionBanks () {
