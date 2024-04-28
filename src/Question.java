@@ -43,11 +43,6 @@ abstract class Question {
         possibleAnswers.addAll(Arrays.asList(answersFromFile));
     }
 
-    public void checkAnswer() {
-        // make this an interface????
-    }
-
-
     public void showQuestion(int questionNum) {
         System.out.println("Question " + questionNum + "\n" + questionText);
     }
@@ -90,7 +85,6 @@ abstract class Question {
         bufferedWriter.close();
         fileWriter.close();
         fileReader.close();
-        scanner.close();
 
         if (questionAdded){
         System.out.println("New question saved");
@@ -135,4 +129,6 @@ abstract class Question {
     public void setQuestionType(QuestionType questionType){
         this.questionType = questionType;
     }
+
+    public abstract int checkAnswer(String inpString, int total);
 }

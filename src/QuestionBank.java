@@ -1,11 +1,12 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class QuestionBank {
     private String questionBankID;
-    private ArrayList<Question> questions;
+    ArrayList<Question> questions;
     private FileReader fileReader;
     private Scanner scanner;
 
@@ -23,92 +24,135 @@ public class QuestionBank {
         questions.add(question);
     }
 
-    public ArrayList<Question> getQuestions() {
-        return questions;
-    }
 
-    /**
-     * set question bank identifier
-     *
-     * @param questionBankID becomes new value of questionBankID attribute
-     */
-    public void setQuestionBankID(String questionBankID) {
-        this.questionBankID = questionBankID;
-    }
-
-    public void takeQuiz() {
+    public void takeQuiz(int totalQuestions) {
         // randomise question order
         Collections.shuffle(questions);
+        ArrayList<Question> quizQuestions = new ArrayList<>();
+
+        if (questions.size() > totalQuestions) {
+            List<Question> trimmedList = questions.subList(0, totalQuestions);
+            quizQuestions.addAll(trimmedList);
+        }
 
         int total = 0;
-
         QuestionType currentType;
-
         ArrayList<String> userAnswers = new ArrayList<>();
         int questionIndex = 0;
-
-        String inpString = scanner.nextLine();
+        String inpString;
         int inpInt;
+        boolean firstQuestion = true;
+        scanner = new Scanner(System.in);
+        long startTime = System.currentTimeMillis();
 
-        while (true){
+        while (true) {
+            if (!firstQuestion){
             /* navigate questions
              b - back
              n - next
              s - submit
              q - quit
             */
-            if ((inpString.equalsIgnoreCase("b") && (questionIndex > 0))){
-              questionIndex--;
+                inpString = scanner.nextLine();
+            if ((inpString.equalsIgnoreCase("b") && (questionIndex > 0))) {
+                questionIndex--;
 
-            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex < questions.size())){
-              questionIndex++;
+            } else if ((inpString.equalsIgnoreCase("b") && (questionIndex == 0))) {
+                System.out.println("This is the first question, enter a different menu option");
+                continue;
 
-            } else if (inpString.equalsIgnoreCase("q")){
-              break;
+            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex < quizQuestions.size()-1)) {
+                questionIndex++;
 
-            } else if (inpString.equalsIgnoreCase("s")){
-                showResults(total, questions.size(), userAnswers);
-            }
+            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex >= quizQuestions.size()-1)) {
+                System.out.println("This is the last question, enter a different menu option");
+                continue;
 
-            // get and output the question
-            currentType = questions.get(questionIndex).questionType;
-            if (currentType==QuestionType.SINGLE_ANSWER){
-              SingleAnswer question = new SingleAnswer(questions.get(questionIndex).questionBankID, currentType,
-                                                        questions.get(questionIndex).questionText,
-                                                        questions.get(questionIndex).possibleAnswers,
-                                                        questions.get(questionIndex).answerIndex);
-              question.showQuestion(questionIndex+1);
-              System.out.println("Your answer: " + userAnswers.get(questionIndex));
-              inpInt = scanner.nextInt();
-              userAnswers.add(questionIndex, String.valueOf(inpInt));
-              question.checkAnswer(inpInt, total);
+            } else if (inpString.equalsIgnoreCase("q")) {
+                break;
 
-            } else if (currentType==QuestionType.FILL_BLANKS){
-              FillBlanks question = new FillBlanks(questions.get(questionIndex).questionBankID, currentType,
-                                                    questions.get(questionIndex).questionText,
-                                                    questions.get(questionIndex).possibleAnswers,
-                                                    questions.get(questionIndex).answerIndex);
-              question.showQuestion(questionIndex+1);
-              System.out.println("Your answer: " + userAnswers.get(questionIndex));
-              inpString = scanner.nextLine();
-              userAnswers.add(questionIndex, inpString);
-              question.checkAnswer(inpString, total);
+            } else if (inpString.equalsIgnoreCase("s")) {
+                long endTime = System.currentTimeMillis();
+                long timeTaken = endTime - startTime;
+                showResults(total, quizQuestions.size(), userAnswers, timeTaken);
+                break;
+
+            } else {
+                System.out.print("Invalid menu option entered");
+                continue;
             }
         }
-    }
+            // get and output the question
+            currentType = quizQuestions.get(questionIndex).questionType;
 
-    private void showResults(int score, int totalQuestions, ArrayList<String> answers) {
+            //determine the type of question to output
+            if (currentType==QuestionType.SINGLE_ANSWER){
+                // initialise new question from array
+              SingleAnswer question = new SingleAnswer(quizQuestions.get(questionIndex).questionBankID, currentType,
+                      quizQuestions.get(questionIndex).questionText,
+                      quizQuestions.get(questionIndex).possibleAnswers,
+                      quizQuestions.get(questionIndex).answerIndex);
+              // output question and users answer
+                handleQuizQuestion(question, questionIndex, userAnswers, total);
+
+            } else if (currentType==QuestionType.FILL_BLANKS){
+                // initialise a new question
+              FillBlanks question = new FillBlanks(quizQuestions.get(questionIndex).questionBankID, currentType,
+                      quizQuestions.get(questionIndex).questionText,
+                      quizQuestions.get(questionIndex).possibleAnswers,
+                      quizQuestions.get(questionIndex).answerIndex);
+
+              // show the question and the users answer if they have inputted an answer
+                handleQuizQuestion(question, questionIndex, userAnswers, total);
+            }
+
+            // show navigation options
+            System.out.println("b - back \t n - next \t s - submit quiz \t q - quit");
+            firstQuestion = false;
+        }
+    }
+    private void handleQuizQuestion(Question question, int questionIndex, ArrayList<String> userAnswers, int total){
+        scanner = new Scanner(System.in);
+        // output the question, and the users answer
+        question.showQuestion(questionIndex+1);
+
+        System.out.println("Your answer: ");
+
+        // only try to show users input if they have inputted an answer for the question
+        if (userAnswers.size() > questionIndex){
+            System.out.println(userAnswers.get(questionIndex));
+        }
+
+        System.out.println("If you are unsure, press enter to enter your answer as empty");
+
+        String inpString = scanner.nextLine();
+        userAnswers.add(questionIndex, inpString);
+
+        // check the answer and update number of correct answers
+        total = question.checkAnswer(inpString, total);
+    }
+    private void showResults(int score, int totalQuestions, ArrayList<String> answers, long timeTaken) {
         float percentage = (score/totalQuestions) * 100;
-        int unansweredCount = 0;
+        int unansweredCount = 0;    // number of questions that were not answered
+
+        // find the number of unanswered questions
+        // by looking for empty locations in array
         for (String answer : answers) {
             if (answer.isEmpty()) {
                 unansweredCount++;
             }
         }
 
-        System.out.println("You scored " + score + " on this quiz, which is " + percentage + "%");
-        System.out.println("You have " + unansweredCount + " unanswered questions, " +
-                            "out of a total of " + totalQuestions + " questions");
+        long minutes = timeTaken / (1000 * 60);
+        long seconds = (timeTaken / 1000) % 60;
+        long milliseconds = timeTaken % 1000;
+
+        // output quiz statistics
+        System.out.println("You scored " + score + " on this quiz, which is " + percentage + "% \n " +
+                            "You have " + unansweredCount + " unanswered questions, out of a total of "
+                            + totalQuestions + " questions \n You completed the quiz in " + minutes + " minute(s), "
+                            + seconds + " second(s), " + milliseconds + " millisecond(s)");
+
     }
 
 
@@ -126,8 +170,6 @@ public class QuestionBank {
                 int readAnswerIndex = scanner.nextInt();
 
                 if (readID.equals(questionBankID)) {
-                    System.out.println("Question " + counter++);
-
                     QuestionType typeToEnum = QuestionType.valueOf(readType);
                     if (typeToEnum == QuestionType.SINGLE_ANSWER) {
                         SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
@@ -141,10 +183,8 @@ public class QuestionBank {
                     }
                 }
                 scanner.nextLine();
-                System.out.println(); // so questions have a space between them
             }
         }
-        scanner.close();
     }
 
     public void removeQuestion(String filename, int questionIndex) throws IOException {
@@ -194,6 +234,7 @@ public class QuestionBank {
         for (Question question : questions) {
             question.showQuestion(questionNum);
             questionNum++;
+            System.out.println(); // so questions have a space between them
         }
     }
 }

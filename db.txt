@@ -1,2 +1,4 @@
-1:1;;SingleAnswer;;abc;;[a, b, c];;1;;
-
+1:1;;FILL_BLANKS;;tyeuw{{blank}};;[aae];;0;;
+1:1;;FILL_BLANKS;;eaeaeae{{blank}};;[popopopp];;0;;
+1:1;;SINGLE_ANSWER;;abc;;[a, b, c];;1;;
+1:1;;SINGLE_ANSWER;;idk;;[a, b, c];;2;;

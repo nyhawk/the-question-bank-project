@@ -56,9 +56,9 @@ public class SingleAnswer extends Question {
             System.err.println(e.getMessage());
         }
     }
-
-    public int checkAnswer(int userAnswer, int total){
-        if (answerIndex == userAnswer){
+    @Override
+    public int checkAnswer(String userAnswer, int total){
+        if (answerIndex == Integer.parseInt(userAnswer)){
             total++;
         }
         return total;

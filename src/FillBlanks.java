@@ -5,6 +5,7 @@ public class FillBlanks extends Question{
 
     public FillBlanks(String questionBankID, QuestionType questionType){
         super(questionBankID, questionType);
+        super.answerIndex = 0;
         possibleAnswers = new ArrayList<>();
     }
 
@@ -48,11 +49,8 @@ public class FillBlanks extends Question{
             newQuestion.setQuestionText(inpQuestion);
         } while (!inpQuestion.contains("{{blank}}"));
 
-
-
         System.out.println("Enter the missing text");
-        possibleAnswers.addFirst(userInp.nextLine());
-        super.setAnswerIndex(0);
+        newQuestion.possibleAnswers.addFirst(userInp.nextLine());
 
         // save question to file
         try {
@@ -62,7 +60,7 @@ public class FillBlanks extends Question{
         }
 
     }
-
+@Override
     public int checkAnswer(String userAnswer, int total){
         if (possibleAnswers.getFirst().equalsIgnoreCase(userAnswer)){
             total++;
