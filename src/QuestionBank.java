@@ -20,11 +20,6 @@ public class QuestionBank {
         questions = new ArrayList<Question>();
     }
 
-    public void addQuestion(Question question) {
-        questions.add(question);
-    }
-
-
     public void takeQuiz(int totalQuestions) {
         // randomise question order
         Collections.shuffle(questions);
@@ -156,7 +151,7 @@ public class QuestionBank {
     }
 
 
-    public void loadFile(String filename) throws FileNotFoundException {
+    public void loadQuestions(String filename) throws FileNotFoundException {
         fileReader = new FileReader(filename);
         scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
@@ -174,12 +169,12 @@ public class QuestionBank {
                     if (typeToEnum == QuestionType.SINGLE_ANSWER) {
                         SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
                         newQuestion.setPossibleAnswers(readAnswers);
-                        this.addQuestion(newQuestion);
+                        questions.add(newQuestion);
 
                     } else if (typeToEnum == QuestionType.FILL_BLANKS) {
                         FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS, readQuestionText, readAnswerIndex);
                         newQuestion.setPossibleAnswers(readAnswers);
-                        this.addQuestion(newQuestion);
+                        questions.add(newQuestion);
                     }
                 }
                 scanner.nextLine();

@@ -112,22 +112,9 @@ abstract class Question {
     }
 
     public String toString() {
-        String answers = "";
-//        for (String possibleAnswers : possibleAnswers){
-//            // extra comma here when nothing in answers
-//            answers = answers + "," + possibleAnswers;
-//        }
         String output = questionBankID + ";;" + questionType + ";;" + questionText
                         + ";;" + possibleAnswers + ";;" + answerIndex + ";;\n";
         return output;
-    }
-
-    public void setAnswerIndex(int newAnswerIndex){
-        answerIndex = newAnswerIndex;
-    }
-
-    public void setQuestionType(QuestionType questionType){
-        this.questionType = questionType;
     }
 
     public abstract int checkAnswer(String inpString, int total);

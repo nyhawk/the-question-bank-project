@@ -12,7 +12,7 @@ import java.util.Scanner;
  * this is the Module class which creates and stores modules with their question banks
  */
 public class Module {
-    private final String moduleID;
+    private String moduleID;
     ArrayList<String> questionBanks;
     private Scanner scanner;
 
@@ -43,8 +43,8 @@ public class Module {
             if (questionBanks.get(i).equals(questionBankID)) {
                 // check if empty by reading file
                 while (scanner.hasNextLine()) {
-                    String readID = scanner.next();
-                    scanner.nextLine();
+                    String readID = scanner.nextLine();
+                    //
                     if (!(questionBankID.equalsIgnoreCase(readID))) {
                         questionBanks.remove(i);
                     } else {

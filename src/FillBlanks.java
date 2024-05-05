@@ -24,9 +24,6 @@ public class FillBlanks extends Question{
         possibleAnswers.addAll(allAnswers);
     }
 
-    public void setBlank(String blank) {
-
-    }
 //
 //    public String getBlank() {
 //        return blank;

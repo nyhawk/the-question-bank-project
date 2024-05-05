@@ -46,7 +46,7 @@ public class SingleAnswer extends Question {
         System.out.println("This is the new question. " +
                 "Input the option number that is the correct answer");
         this.showQuestion(1);
-        this.setAnswerIndex(userInp.nextInt()-1);
+        this.answerIndex = userInp.nextInt()-1;
         userInp.nextLine();
 
         // save question to file
