@@ -18,8 +18,6 @@ public class Menu {
         QuestionBank bank = null;
         String moduleID;
 
-        System.out.println("********** The Question Bank **********");
-
         switch (menuOpt) {
             case 1:
                 // create question bank
@@ -61,222 +59,221 @@ public class Menu {
                 validIDs = checkID(questionBankID);
                 if (validIDs) {
                     // get question type
-                    System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks");
-                    int inpQuestionType = userInp.nextInt();
+                    System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks \n 3 - True-false");
+                    int inpTypeOption = userInp.nextInt();
                     userInp.nextLine();
 
-                    // add question
-                    switch (inpQuestionType) {
-                        case 1:
-                            // single answer
-                            SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
-                                    QuestionType.SINGLE_ANSWER);
-                            singleAnswerQuestion.addQuestion();
-
+                        QuestionType questionType;
+                        if (inpTypeOption == 1) {
+                            questionType = QuestionType.SINGLE_ANSWER;
+                        } else if (inpTypeOption == 2) {
+                            questionType = QuestionType.FILL_BLANKS;
+                        } else if (inpTypeOption == 3) {
+                            questionType = QuestionType.TRUE_FALSE;
+                        } else {
+                            System.out.println("Invalid menu option");
                             break;
-                        case 2:
-                            // fill-the-blanks
-                            FillBlanks fillBlanksQuestion;
-                            fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
-                            fillBlanksQuestion.addQuestion();
-                            break;
-                        default:
-                            System.out.println("Invalid question type");
+                        }
+                        // add question
+                        Question question = SelectQuestion.initialseQuestion(questionBankID, questionType);
+                        question.addQuestion();
+
+                    } else {
+                        System.out.println("Invalid question bank identifier");
                     }
-                } else {
-                    System.out.println("Invalid question bank identifier");
-                }
 
-                break;
+                    break;
 
-            case 3:
-                // show question banks
-                System.out.println("Input module identifier");
-                moduleID = userInp.nextLine();
-
-                // validate module identifier
-                if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
-                    Module newModule = new Module(moduleID);
-                    try {
-                        // get question banks from file
-                        newModule.loadQuestionBanks("db.txt");
-
-                        // once banks found, output them
-                        newModule.showQuestionBanks();
-
-                    } catch (IOException e) {
-                        System.err.println(e.getMessage());
-                    }
-                }
-                break;
-
-            case 4:
-                // show questions
-                // get question bank id
-                System.out.println("Input the question bank identifier");
-                questionBankID = userInp.nextLine();
-
-                // validate id
-                validIDs = checkID(questionBankID);
-                if (validIDs) {
-                    bank = new QuestionBank(questionBankID);
-                    try {
-                        // find questions in database
-                        bank.loadQuestions("db.txt");
-
-                        // show questions loaded from database
-                        bank.showAllQuestions();
-                    } catch (FileNotFoundException e) {
-                        System.err.println(e.getMessage());
-                    }
-                } else{
-                    System.out.println("Invalid question bank identifier");
-                }
-                break;
-
-            case 5:
-                // delete question bank
-
-                // get question bank ID
-                System.out.println("Input the question bank identifier of the question bank to be deleted");
-                questionBankID = userInp.nextLine();
-
-                //validate identifier
-                validIDs = checkID(questionBankID);
-                String[] separateIDs = questionBankID.split(":");
-                if (validIDs) {
-                    Module deleteBank = new Module(separateIDs[0]);
-
-                    // delete bank
-                    try {
-                        deleteBank.removeQuestionBank(questionBankID, "db.txt");
-                    } catch (IOException e){
-                        System.err.println(e.getMessage());
-                    }
-                } else {
-                    System.out.println("Invalid question bank identifier inputted");
-                }
-
-                break;
-
-            case 6:
-                // delete question
-                System.out.println("Input the index of the question to be deleted, " +
-                        "displayed next to the question when all questions shown (menu option 4)");
-                int questionIndex = userInp.nextInt();
-
-                // user must have seen all questions in a bank to find the question number
-                if (bank != null) {
-                    try {
-                        bank.removeQuestion("db.txt", questionIndex);
-                    } catch (IOException e) {
-                        System.err.println(e.getMessage());
-                    }
-                } else {
-                    System.out.println("View a question bank's questions in option 4 before deleting");
-                }
-                break;
-
-            case 7:
-                // take quiz
-                System.out.println("Select an option to take a quiz \n 1. View question banks \n 2. Input question bank");
-                int choice = userInp.nextInt();
-                userInp.nextLine();
-
-                switch (choice){
-                    case 1:
-                        // take quiz by outputting question banks for a module
+                    case 3:
+                        // show question banks
                         System.out.println("Input module identifier");
                         moduleID = userInp.nextLine();
 
-                        // validate id
+                        // validate module identifier
                         if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
                             Module newModule = new Module(moduleID);
                             try {
-                                // get banks from database, and output them
+                                // get question banks from file
                                 newModule.loadQuestionBanks("db.txt");
+
+                                // once banks found, output them
                                 newModule.showQuestionBanks();
-
-                                // get user input
-                                System.out.println("Input the question bank identifier");
-                                questionBankID = userInp.nextLine();
-
-                                // validate id
-                                validIDs = checkID(questionBankID);
-                                if (validIDs) {
-                                    // load the questions for the inputted bank from database
-                                    bank = new QuestionBank(questionBankID);
-                                    bank.loadQuestions("db.txt");
-
-                                    // take a quiz using the questions in the question bank, including all questions
-                                    bank.takeQuiz(bank.questions.size()-1);
-
-                                } else{
-                                    System.out.println("Invalid question bank identifier");
-                                }
 
                             } catch (IOException e) {
                                 System.err.println(e.getMessage());
                             }
                         }
+
                         break;
 
-                    case 2:
-                        // take quiz by user inputting question bank id and number of questions
-
-                        // get and validate question bank id
+                    case 4:
+                        // show questions
+                        // get question bank id
                         System.out.println("Input the question bank identifier");
                         questionBankID = userInp.nextLine();
+
+                        // validate id
                         validIDs = checkID(questionBankID);
                         if (validIDs) {
                             bank = new QuestionBank(questionBankID);
                             try {
-                                // load the question bank from the database
+                                // find questions in database
                                 bank.loadQuestions("db.txt");
 
-                                // get the number of questions to show in the quiz
-                                System.out.println("Enter the number of questions in the quiz");
-                                int totalQuestions = userInp.nextInt();
-
-                                // take a quiz
-                                bank.takeQuiz(totalQuestions);
-
+                                // show questions loaded from database
+                                bank.showAllQuestions();
                             } catch (FileNotFoundException e) {
                                 System.err.println(e.getMessage());
                             }
-                        } else{
+                        } else {
                             System.out.println("Invalid question bank identifier");
                         }
                         break;
 
+                    case 5:
+                        // delete question bank
+
+                        // get question bank ID
+                        System.out.println("Input the question bank identifier of the question bank to be deleted");
+                        questionBankID = userInp.nextLine();
+
+                        //validate identifier
+                        validIDs = checkID(questionBankID);
+                        String[] separateIDs = questionBankID.split(":");
+                        if (validIDs) {
+                            Module deleteBank = new Module(separateIDs[0]);
+
+                            // delete bank
+                            try {
+                                deleteBank.removeQuestionBank(questionBankID, "db.txt");
+                            } catch (IOException e) {
+                                System.err.println(e.getMessage());
+                            }
+                        } else {
+                            System.out.println("Invalid question bank identifier inputted");
+                        }
+
+                        break;
+
+                    case 6:
+                        // delete question
+                        System.out.println("Input the index of the question to be deleted, " +
+                                "displayed next to the question when all questions shown (menu option 4)");
+                        int questionIndex = userInp.nextInt();
+
+                        // user must have seen all questions in a bank to find the question number
+                        if (bank != null) {
+                            try {
+                                bank.removeQuestion("db.txt", questionIndex);
+                            } catch (IOException e) {
+                                System.err.println(e.getMessage());
+                            }
+                        } else {
+                            System.out.println("View a question bank's questions in option 4 before deleting");
+                        }
+                        break;
+
+                    case 7:
+                        // take quiz
+                        System.out.println("Select an option to take a quiz \n 1. View question banks \n 2. Input question bank");
+                        int choice = userInp.nextInt();
+                        userInp.nextLine();
+
+                        switch (choice) {
+                            case 1:
+                                // take quiz by outputting question banks for a module
+                                System.out.println("Input module identifier");
+                                moduleID = userInp.nextLine();
+
+                                // validate id
+                                if ((!moduleID.isEmpty()) && (moduleID.length() <= 7)) {
+                                    Module newModule = new Module(moduleID);
+                                    try {
+                                        // get banks from database, and output them
+                                        newModule.loadQuestionBanks("db.txt");
+                                        newModule.showQuestionBanks();
+
+                                        // get user input
+                                        System.out.println("Input the question bank identifier");
+                                        questionBankID = userInp.nextLine();
+
+                                        // validate id
+                                        validIDs = checkID(questionBankID);
+                                        if (validIDs) {
+                                            // load the questions for the inputted bank from database
+                                            bank = new QuestionBank(questionBankID);
+                                            bank.loadQuestions("db.txt");
+
+                                            // take a quiz using the questions in the question bank, including all questions
+                                            bank.takeQuiz(bank.questions.size() - 1);
+
+                                        } else {
+                                            System.out.println("Invalid question bank identifier");
+                                        }
+
+                                    } catch (IOException e) {
+                                        System.err.println(e.getMessage());
+                                    }
+                                }
+                                break;
+
+                            case 2:
+                                // take quiz by user inputting question bank id and number of questions
+
+                                // get and validate question bank id
+                                System.out.println("Input the question bank identifier");
+                                questionBankID = userInp.nextLine();
+                                validIDs = checkID(questionBankID);
+                                if (validIDs) {
+                                    bank = new QuestionBank(questionBankID);
+                                    try {
+                                        // load the question bank from the database
+                                        bank.loadQuestions("db.txt");
+
+                                        // get the number of questions to show in the quiz
+                                        System.out.println("Enter the number of questions in the quiz");
+                                        int totalQuestions = userInp.nextInt();
+
+                                        // take a quiz
+                                        bank.takeQuiz(totalQuestions);
+
+                                    } catch (FileNotFoundException e) {
+                                        System.err.println(e.getMessage());
+                                    }
+                                } else {
+                                    System.out.println("Invalid question bank identifier");
+                                }
+                                break;
+
+                            default:
+                                System.out.println("Invalid option");
+                        }
+
+                        break;
+
+                    case 8:
+                        // quit
+                        System.out.println("Exiting question bank application");
+                        System.exit(0);
+                        break;
+
                     default:
-                        System.out.println("Invalid option");
+                        System.out.println("Invalid menu option chosen");
                 }
-
-                break;
-
-            case 8:
-                // quit
-                System.out.println("Exiting question bank application");
-                System.exit(0);
-                break;
-
-            default:
-                System.out.println("Invalid menu option chosen");
         }
-    }
 
 
-    /**
-     * outputs the menu
-     */
-    public void printMenu() {
-        System.out.println("\n Select an option \n " +
-                "1 - Add empty question bank \n 2 - Add question \n " +
-                "3 - Show question banks \n 4 - Show questions \n " +
-                "5 - Delete question bank \n 6 - Delete question \n " +
-                "7 - Take quiz \n 8 - Exit \n");
-    }
+        /**
+         * outputs the menu
+         */
+        public void printMenu () {
+            System.out.println("\n Select an option \n " +
+                    "1 - Add empty question bank \n 2 - Add question \n " +
+                    "3 - Show question banks \n 4 - Show questions \n " +
+                    "5 - Delete question bank \n 6 - Delete question \n " +
+                    "7 - Take quiz \n 8 - Exit \n");
+        }
+
 
     /**
      * validate the inputted question bank identifier
