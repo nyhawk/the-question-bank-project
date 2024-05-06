@@ -5,22 +5,17 @@ import java.util.Scanner;
  */
 public class Main {
     private Scanner userInp = new Scanner(System.in);
+    private final Menu menu = new Menu();
 
-    /**
-     * runs the application
-     * shows menu options and prompts user for input until the user decides to quit the program
-     */
     public void runApp() {
         int menuOpt;
 
         System.out.println("********** The Question Bank **********");
 
-        Menu menu = new Menu();
-
         while (true) {
-            menu.printMenu();
             menuOpt = userInp.nextInt();
             userInp.nextLine(); // consume newline character
+
             menu.manageMenu(menuOpt);
 
             if (menuOpt==8){
