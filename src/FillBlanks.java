@@ -3,25 +3,12 @@ import java.util.ArrayList;
 
 public class FillBlanks extends Question{
 
-    /**
-     * constructor
-     * @param questionBankID is the bank identifier
-     * @param questionType is the type of question
-     */
     public FillBlanks(String questionBankID, QuestionType questionType){
         super(questionBankID, questionType);
         super.answerIndex = 0;
         possibleAnswers = new ArrayList<>();
     }
 
-
-    /**
-     * constructor
-     * @param questionBankID is the bank identifier
-     * @param questionType is the question type
-     * @param questionText is the question text
-     * @param answerIndex is the location of the correct answer
-     */
     public FillBlanks(String questionBankID, QuestionType questionType, String questionText, int answerIndex) {
         super(questionBankID, questionType);
         super.questionText = questionText;
@@ -29,14 +16,6 @@ public class FillBlanks extends Question{
         possibleAnswers = new ArrayList<>();
     }
 
-    /**
-     * constructor
-     * @param questionBankID is the bank identifier
-     * @param questionType is the question type
-     * @param questionText is the question text
-     * @param allAnswers is a list of the answer options
-     * @param answerIndex is the location of the correct answer
-     */
     public FillBlanks(String questionBankID, QuestionType questionType, String questionText, ArrayList<String> allAnswers, int answerIndex) {
         super(questionBankID, questionType);
         super.questionText = questionText;
@@ -45,11 +24,11 @@ public class FillBlanks extends Question{
         possibleAnswers.addAll(allAnswers);
     }
 
-    /**
-     * shows a question
-     * @param questionNum is the question number
-     */
-    @Override
+//
+//    public String getBlank() {
+//        return blank;
+//    }
+@Override
     public void showQuestion(int questionNum){
         String question = super.getQuestionText().replace("{{blank}}","_____");
         System.out.println("Question "+questionNum + "\n");
@@ -57,9 +36,7 @@ public class FillBlanks extends Question{
         System.out.println(question);
     }
 
-    /**
-     * adds a new question
-     */
+
     public void addQuestion(){
         FillBlanks newQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
         String inpQuestion;
@@ -80,18 +57,11 @@ public class FillBlanks extends Question{
         }
 
     }
-
-    /**
-     * check the users answer to a quiz question
-     * @param userAnswer the users answer
-     * @param score the number of correct questions
-     * @return the new score
-     */
-    @Override
-    public int checkAnswer(String userAnswer, int score){
+@Override
+    public int checkAnswer(String userAnswer, int total){
         if (possibleAnswers.getFirst().equalsIgnoreCase(userAnswer)){
-            score++;
+            total++;
         }
-        return score;
+        return total;
     }
 }

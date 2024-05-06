@@ -38,50 +38,23 @@ public class Module {
         FileReader fileReader = new FileReader(filename);
         scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
-        String tempFilename = "tempFile.txt";
-        FileWriter fileWriter = new FileWriter(tempFilename, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        String readQuestion;
-        int counter = 0;
-        while (scanner.hasNextLine()) {
-            readQuestion = scanner.nextLine();
-
-            if ((readQuestion.startsWith(questionBankID))) {
-                if (questionBankID.equalsIgnoreCase(readQuestion)) {
-                    System.out.println("Question bank is not empty so cannot be deleted");
-                } else {
-                    questionBanks.remove(counter);
+        for (int i = 0; i < questionBanks.size(); i++) {
+            if (questionBanks.get(i).equals(questionBankID)) {
+                // check if empty by reading file
+                while (scanner.hasNextLine()) {
+                    String readID = scanner.nextLine();
+                    //
+                    if (!(questionBankID.equalsIgnoreCase(readID))) {
+                        questionBanks.remove(i);
+                    } else {
+                        System.out.println("Question bank is not empty so cannot be deleted");
+                    }
                 }
-            } else {
-                bufferedWriter.write(readQuestion + "\n");
             }
-            counter++;
         }
-        bufferedWriter.close();
-        fileWriter.close();
         fileReader.close();
-
-        // rename file
-        File tempFile = new File(tempFilename);
-        File oldFile = new File(filename);
-        oldFile.delete();
-        tempFile.renameTo(oldFile);
     }
-//        for (int i = 0; i < questionBanks.size(); i++) {
-//            if (questionBanks.get(i).equals(questionBankID)) {
-//                // check if empty by reading file
-//                while (scanner.hasNextLine()) {
-//                    String readID = scanner.nextLine();
-//                    //
-//                    if (!(questionBankID.equalsIgnoreCase(readID))) {
-//                        questionBanks.remove(i);
-//                    } else {
-//                        System.out.println("Question bank is not empty so cannot be deleted");
-//                    }
-//                }
-//            }
-//        }
 
     /**
      * loads a module's question banks from the database
@@ -118,24 +91,12 @@ public class Module {
         }
     }
 
-    /**
-     * outputs each question bank identifier from the ArrayList
-     */
     public void showQuestionBanks () {
         for (String questionBank : questionBanks) {
             System.out.println(questionBank);
         }
     }
 
-    /**
-     * writes a new bank to the database
-     * checks if the bank already exists
-     * if not, the empty bank is written to the file
-     *
-     * @param filename is the name of the database file
-     * @param questionBankID is the identifier of the new question bank
-     * @throws IOException during writing to the file
-     */
     public void writeBankToFile(String filename, String questionBankID) throws IOException {
         FileWriter fileWriter = new FileWriter(filename, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -145,7 +106,7 @@ public class Module {
 
         String readQuestion;
 
-        // check the bank is not already in the file
+        // check the module is not already in the file
         while (scanner.hasNextLine()) {
             readQuestion = scanner.nextLine();
 
@@ -155,7 +116,7 @@ public class Module {
             }
         }
 
-        // if no instances of bank found, add the bank
+        // if no instances of module found, add the module
         bufferedWriter.write(questionBankID + ";;;;;;;;;;" + "\n");
         bufferedWriter.close();
         fileWriter.close();
