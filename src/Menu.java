@@ -3,11 +3,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MainMenu {
+public class Menu {
     private ArrayList<Module> modules = new ArrayList<>();
     private Scanner userInp = new Scanner(System.in);
 
-    public MainMenu() {
+    public Menu() {
     }
     /**
      * get the menu option selected by user and initialise appropriate objects

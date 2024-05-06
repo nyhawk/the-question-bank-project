@@ -15,7 +15,7 @@ public class Main {
 
         System.out.println("********** The Question Bank **********");
 
-        MainMenu menu = new MainMenu();
+        Menu menu = new Menu();
 
         while (true) {
             menu.printMenu();
