@@ -5,23 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14bb7390-5d34-41cc-9aa2-c48839dbe7af" name="Changes" comment="Small fixes">
-      <change afterPath="$PROJECT_DIR$/.$classDiagramUpdated.drawio.bkp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Example-reports.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classDiagram.drawio.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classDiagramUpdated.drawio" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/classDiagramUpdated.drawio.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Menu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/~$report.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MainMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SelectQuestion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TrueFalse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/classDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/assignment1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classDiagramUpdated.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/classDiagramUpdated.drawio" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/report.docx" beforeDir="false" afterPath="$PROJECT_DIR$/report.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FillBlanks.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FillBlanks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FillBlanks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Module.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Question.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Question.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/QuestionBank.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/QuestionBank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/QuestionBank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/QuestionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/QuestionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SingleAnswer.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SingleAnswer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SingleAnswer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/useCaseDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/useCaseDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/~$report.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +40,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -39,7 +48,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="takeQuiz" />
+        <entry key="$PROJECT_DIR$" value="moreFixes" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +71,7 @@
     <setting file="file://$PROJECT_DIR$/src/Module.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -75,34 +84,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
-    &quot;Application.Unnamed.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;moreFixes&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;M:/documents/CS12320/calculator-gui-partial&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor.code.editing&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "creativity",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "M:/documents/CS12320/calculator-gui-partial",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.editor.code.editing"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="assignment1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -208,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714316704430</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Small fixes">
+      <option name="closed" value="true" />
+      <created>1714942296111</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714942296111</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -262,7 +270,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/QuestionBank.java</url>
-          <line>204</line>
+          <line>217</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -271,39 +279,34 @@
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Question.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/SingleAnswer.java</url>
-          <line>53</line>
+          <line>79</line>
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/FillBlanks.java</url>
-          <line>46</line>
+          <line>69</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/FillBlanks.java</url>
-          <line>53</line>
+          <line>76</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Question.java</url>
-          <line>79</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/QuestionBank.java</url>
-          <line>24</line>
+          <line>32</line>
           <option name="timeStamp" value="65" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/QuestionBank.java</url>
-          <line>58</line>
+          <line>65</line>
           <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/MainMenu.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
