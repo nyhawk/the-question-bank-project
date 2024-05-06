@@ -79,27 +79,31 @@ public class QuestionBank {
         }
             // get and output the question
             currentType = quizQuestions.get(questionIndex).questionType;
-
+            Question question = SelectQuestion.initialseQuestion(quizQuestions.get(questionIndex).questionBankID,
+                    currentType, quizQuestions.get(questionIndex).questionText,
+                    quizQuestions.get(questionIndex).possibleAnswers,
+                    quizQuestions.get(questionIndex).answerIndex);
+            handleQuizQuestion(question, questionIndex, userAnswers, total);
             //determine the type of question to output
-            if (currentType==QuestionType.SINGLE_ANSWER){
-                // initialise new question from array
-              SingleAnswer question = new SingleAnswer(quizQuestions.get(questionIndex).questionBankID, currentType,
-                      quizQuestions.get(questionIndex).questionText,
-                      quizQuestions.get(questionIndex).possibleAnswers,
-                      quizQuestions.get(questionIndex).answerIndex);
-              // output question and users answer
-                handleQuizQuestion(question, questionIndex, userAnswers, total);
-
-            } else if (currentType==QuestionType.FILL_BLANKS){
-                // initialise a new question
-              FillBlanks question = new FillBlanks(quizQuestions.get(questionIndex).questionBankID, currentType,
-                      quizQuestions.get(questionIndex).questionText,
-                      quizQuestions.get(questionIndex).possibleAnswers,
-                      quizQuestions.get(questionIndex).answerIndex);
-
-              // show the question and the users answer if they have inputted an answer
-                handleQuizQuestion(question, questionIndex, userAnswers, total);
-            }
+//            if (currentType==QuestionType.SINGLE_ANSWER){
+//                // initialise new question from array
+//              SingleAnswer question = new SingleAnswer(quizQuestions.get(questionIndex).questionBankID, currentType,
+//                      quizQuestions.get(questionIndex).questionText,
+//                      quizQuestions.get(questionIndex).possibleAnswers,
+//                      quizQuestions.get(questionIndex).answerIndex);
+//              // output question and users answer
+//                handleQuizQuestion(question, questionIndex, userAnswers, total);
+//
+//            } else if (currentType==QuestionType.FILL_BLANKS){
+//                // initialise a new question
+//              FillBlanks question = new FillBlanks(quizQuestions.get(questionIndex).questionBankID, currentType,
+//                      quizQuestions.get(questionIndex).questionText,
+//                      quizQuestions.get(questionIndex).possibleAnswers,
+//                      quizQuestions.get(questionIndex).answerIndex);
+//
+//              // show the question and the users answer if they have inputted an answer
+//                handleQuizQuestion(question, questionIndex, userAnswers, total);
+//            }
 
             // show navigation options
             System.out.println("b - back \t n - next \t s - submit quiz \t q - quit");
@@ -166,16 +170,19 @@ public class QuestionBank {
 
                 if (readID.equals(questionBankID)) {
                     QuestionType typeToEnum = QuestionType.valueOf(readType);
-                    if (typeToEnum == QuestionType.SINGLE_ANSWER) {
-                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
-                        newQuestion.setPossibleAnswers(readAnswers);
-                        questions.add(newQuestion);
-
-                    } else if (typeToEnum == QuestionType.FILL_BLANKS) {
-                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS, readQuestionText, readAnswerIndex);
-                        newQuestion.setPossibleAnswers(readAnswers);
-                        questions.add(newQuestion);
-                    }
+                    Question newQuestion = SelectQuestion.initialseQuestion(readID, typeToEnum, readQuestionText, readAnswerIndex);
+                    newQuestion.setPossibleAnswers(readAnswers);
+                    questions.add(newQuestion);
+//                    if (typeToEnum == QuestionType.SINGLE_ANSWER) {
+//                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
+//                        newQuestion.setPossibleAnswers(readAnswers);
+//                        questions.add(newQuestion);
+//
+//                    } else if (typeToEnum == QuestionType.FILL_BLANKS) {
+//                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS, readQuestionText, readAnswerIndex);
+//                        newQuestion.setPossibleAnswers(readAnswers);
+//                        questions.add(newQuestion);
+//                    }
                 }
                 scanner.nextLine();
             }

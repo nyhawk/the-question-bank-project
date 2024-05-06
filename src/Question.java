@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-abstract class Question {
+public abstract class Question {
     String questionText;
 
     String questionBankID;
@@ -25,7 +25,7 @@ abstract class Question {
 
     }
 
-    public void addQuestion(String questionBankID, String questionType) {}
+    public void addQuestion() {}
     public ArrayList<String> getPossibleAnswers() {
         return possibleAnswers;
     }

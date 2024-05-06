@@ -36,7 +36,7 @@ public class FillBlanks extends Question{
         System.out.println(question);
     }
 
-
+@Override
     public void addQuestion(){
         FillBlanks newQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
         String inpQuestion;

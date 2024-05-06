@@ -61,28 +61,42 @@ public class Menu {
                 validIDs = checkID(questionBankID);
                 if (validIDs) {
                     // get question type
-                    System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks");
+                    System.out.println("Select a question type \n 1 - Single answer \n 2 - Fill-the-blanks \n 3 - True-false");
                     int inpQuestionType = userInp.nextInt();
                     userInp.nextLine();
 
                     // add question
-                    switch (inpQuestionType) {
-                        case 1:
-                            // single answer
-                            SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
-                                    QuestionType.SINGLE_ANSWER);
-                            singleAnswerQuestion.addQuestion();
-
-                            break;
-                        case 2:
-                            // fill-the-blanks
-                            FillBlanks fillBlanksQuestion;
-                            fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
-                            fillBlanksQuestion.addQuestion();
-                            break;
-                        default:
-                            System.out.println("Invalid question type");
+                    QuestionType questionType;
+                    if (inpQuestionType == 1) {
+                        questionType = QuestionType.SINGLE_ANSWER;
+                    } else if (inpQuestionType == 2) {
+                        questionType = QuestionType.FILL_BLANKS;
+                    } else if (inpQuestionType == 3) {
+                        questionType = QuestionType.TRUE_FALSE;
+                    } else {
+                        System.out.println("Invalid menu option");
+                        break;
                     }
+                    // add question
+                    Question question = SelectQuestion.initialseQuestion(questionBankID, questionType);
+                    question.addQuestion();
+//                    switch (inpQuestionType) {
+//                        case 1:
+//                            // single answer
+//                            SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
+//                                    QuestionType.SINGLE_ANSWER);
+//                            singleAnswerQuestion.addQuestion();
+//
+//                            break;
+//                        case 2:
+//                            // fill-the-blanks
+//                            FillBlanks fillBlanksQuestion;
+//                            fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
+//                            fillBlanksQuestion.addQuestion();
+//                            break;
+//                        default:
+//                            System.out.println("Invalid question type");
+//                    }
                 } else {
                     System.out.println("Invalid question bank identifier");
                 }

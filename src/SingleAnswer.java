@@ -31,7 +31,7 @@ public class SingleAnswer extends Question {
 
         }
     }
-
+@Override
     public void addQuestion() {
         System.out.println("Enter the question");
         this.setQuestionText(userInp.nextLine());
