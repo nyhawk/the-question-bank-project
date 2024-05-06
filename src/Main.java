@@ -13,6 +13,7 @@ public class Main {
         System.out.println("********** The Question Bank **********");
 
         while (true) {
+            menu.printMenu();
             menuOpt = userInp.nextInt();
             userInp.nextLine(); // consume newline character
 
