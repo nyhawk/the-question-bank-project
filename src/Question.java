@@ -25,52 +25,28 @@ public abstract class Question {
 
     }
 
-    /**
-     *
-     * class implemented in subclasses
-     * add a new question
-     *
-     */
-    public void addQuestion(){}
+    public void addQuestion() {}
+    public ArrayList<String> getPossibleAnswers() {
+        return possibleAnswers;
+    }
 
-    /**
-     * set question text
-     * @param questionText is the new question text
-     */
     public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
 
-    /**
-     * get question text
-     * @return question text
-     */
     public String getQuestionText() {
         return questionText;
     }
 
-    /**
-     * set possible answers
-     * @param answers is a string of answers read from database
-     */
     public void setPossibleAnswers(String answers){
-        String[] answersFromFile = answers.substring(1, (answers.length()-1)).split(", ");
+        String answersFromFile[] = answers.substring(1, (answers.length()-1)).split(", ");
         possibleAnswers.addAll(Arrays.asList(answersFromFile));
     }
 
-    /**
-     * show a question
-     * @param questionNum is the question number
-     */
     public void showQuestion(int questionNum) {
         System.out.println("Question " + questionNum + "\n" + questionText);
     }
 
-    /**
-     * save a question to the database
-     * @param filename is the name of the file
-     * @throws IOException when writing to file
-     */
     public void writeQuestionToFile(String filename) throws IOException {
         String tempFilename = "tempFile.txt";
 
@@ -141,11 +117,5 @@ public abstract class Question {
         return output;
     }
 
-    /**
-     * check inputted quiz answer
-     * @param inpString the users answer
-     * @param score the number of correct questions
-     * @return the new score
-     */
-    public abstract int checkAnswer(String inpString, int score);
+    public abstract int checkAnswer(String inpString, int total);
 }

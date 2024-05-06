@@ -20,14 +20,6 @@ public class QuestionBank {
         questions = new ArrayList<Question>();
     }
 
-    /**
-     * runs the quiz functionality
-     * @param totalQuestions is the number of questions to include in the quiz.
-     * questions in the array are randomised,and an array of the correct number of questions is made.
-     *
-     *
-     *
-     */
     public void takeQuiz(int totalQuestions) {
         // randomise question order
         Collections.shuffle(questions);
@@ -43,12 +35,13 @@ public class QuestionBank {
         ArrayList<String> userAnswers = new ArrayList<>();
         int questionIndex = 0;
         String inpString;
+        int inpInt;
         boolean firstQuestion = true;
         scanner = new Scanner(System.in);
         long startTime = System.currentTimeMillis();
 
         while (true) {
-            if (!firstQuestion) {
+            if (!firstQuestion){
             /* navigate questions
              b - back
              n - next
@@ -56,59 +49,68 @@ public class QuestionBank {
              q - quit
             */
                 inpString = scanner.nextLine();
-                if ((inpString.equalsIgnoreCase("b") && (questionIndex > 0))) {
-                    questionIndex--;
+            if ((inpString.equalsIgnoreCase("b") && (questionIndex > 0))) {
+                questionIndex--;
 
-                } else if ((inpString.equalsIgnoreCase("b") && (questionIndex == 0))) {
-                    System.out.println("This is the first question, enter a different menu option");
-                    continue;
+            } else if ((inpString.equalsIgnoreCase("b") && (questionIndex == 0))) {
+                System.out.println("This is the first question, enter a different menu option");
+                continue;
 
-                } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex < quizQuestions.size() - 1)) {
-                    questionIndex++;
+            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex < quizQuestions.size()-1)) {
+                questionIndex++;
 
-                } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex >= quizQuestions.size() - 1)) {
-                    System.out.println("This is the last question, enter a different menu option");
-                    continue;
+            } else if ((inpString.equalsIgnoreCase("n")) && (questionIndex >= quizQuestions.size()-1)) {
+                System.out.println("This is the last question, enter a different menu option");
+                continue;
 
-                } else if (inpString.equalsIgnoreCase("q")) {
-                    break;
+            } else if (inpString.equalsIgnoreCase("q")) {
+                break;
 
-                } else if (inpString.equalsIgnoreCase("s")) {
-                    long endTime = System.currentTimeMillis();
-                    long timeTaken = endTime - startTime;
-                    showResults(total, quizQuestions.size(), userAnswers, timeTaken);
-                    break;
+            } else if (inpString.equalsIgnoreCase("s")) {
+                long endTime = System.currentTimeMillis();
+                long timeTaken = endTime - startTime;
+                showResults(total, quizQuestions.size(), userAnswers, timeTaken);
+                break;
 
-                } else {
-                    System.out.print("Invalid menu option entered");
-                    continue;
-                }
+            } else {
+                System.out.print("Invalid menu option entered");
+                continue;
             }
+        }
             // get and output the question
             currentType = quizQuestions.get(questionIndex).questionType;
-
             Question question = SelectQuestion.initialseQuestion(quizQuestions.get(questionIndex).questionBankID,
                     currentType, quizQuestions.get(questionIndex).questionText,
                     quizQuestions.get(questionIndex).possibleAnswers,
                     quizQuestions.get(questionIndex).answerIndex);
-
-            // show the question and the users answer if they have inputted an answer
             handleQuizQuestion(question, questionIndex, userAnswers, total);
+            //determine the type of question to output
+//            if (currentType==QuestionType.SINGLE_ANSWER){
+//                // initialise new question from array
+//              SingleAnswer question = new SingleAnswer(quizQuestions.get(questionIndex).questionBankID, currentType,
+//                      quizQuestions.get(questionIndex).questionText,
+//                      quizQuestions.get(questionIndex).possibleAnswers,
+//                      quizQuestions.get(questionIndex).answerIndex);
+//              // output question and users answer
+//                handleQuizQuestion(question, questionIndex, userAnswers, total);
+//
+//            } else if (currentType==QuestionType.FILL_BLANKS){
+//                // initialise a new question
+//              FillBlanks question = new FillBlanks(quizQuestions.get(questionIndex).questionBankID, currentType,
+//                      quizQuestions.get(questionIndex).questionText,
+//                      quizQuestions.get(questionIndex).possibleAnswers,
+//                      quizQuestions.get(questionIndex).answerIndex);
+//
+//              // show the question and the users answer if they have inputted an answer
+//                handleQuizQuestion(question, questionIndex, userAnswers, total);
+//            }
 
             // show navigation options
             System.out.println("b - back \t n - next \t s - submit quiz \t q - quit");
             firstQuestion = false;
         }
     }
-
-    /**
-     *
-     * @param question is the question to be shown
-     * @param questionIndex is the location of the question in the ArrayList
-     * @param userAnswers is a list of the users answers to the quiz
-     * @param score is the number of correct answers
-     */
-    private void handleQuizQuestion(Question question, int questionIndex, ArrayList<String> userAnswers, int score){
+    private void handleQuizQuestion(Question question, int questionIndex, ArrayList<String> userAnswers, int total){
         scanner = new Scanner(System.in);
         // output the question, and the users answer
         question.showQuestion(questionIndex+1);
@@ -126,16 +128,8 @@ public class QuestionBank {
         userAnswers.add(questionIndex, inpString);
 
         // check the answer and update number of correct answers
-        question.checkAnswer(inpString, score);
+        total = question.checkAnswer(inpString, total);
     }
-
-    /**
-     * shows the users quiz results at the end of a quiz
-     * @param score is the number of correct answers
-     * @param totalQuestions is the number of questions in the quiz
-     * @param answers is a list of the inputted answers
-     * @param timeTaken is the time taken to complete the quiz
-     */
     private void showResults(int score, int totalQuestions, ArrayList<String> answers, long timeTaken) {
         float percentage = (score/totalQuestions) * 100;
         int unansweredCount = 0;    // number of questions that were not answered
@@ -160,16 +154,12 @@ public class QuestionBank {
 
     }
 
-    /**
-     * read the questions from the file into the ArrayList
-     * @param filename is the name of the file
-     * @throws FileNotFoundException when reading file
-     */
+
     public void loadQuestions(String filename) throws FileNotFoundException {
         fileReader = new FileReader(filename);
         scanner = new Scanner(fileReader);
         scanner.useDelimiter(";;"); // separator
-
+        int counter = 1;
         while (scanner.hasNext()) {
             String readID = scanner.next();
             if ((!readID.isEmpty()) && (!readID.equals("\n"))){
@@ -183,18 +173,22 @@ public class QuestionBank {
                     Question newQuestion = SelectQuestion.initialseQuestion(readID, typeToEnum, readQuestionText, readAnswerIndex);
                     newQuestion.setPossibleAnswers(readAnswers);
                     questions.add(newQuestion);
+//                    if (typeToEnum == QuestionType.SINGLE_ANSWER) {
+//                        SingleAnswer newQuestion = new SingleAnswer(readID, QuestionType.SINGLE_ANSWER, readQuestionText, readAnswerIndex);
+//                        newQuestion.setPossibleAnswers(readAnswers);
+//                        questions.add(newQuestion);
+//
+//                    } else if (typeToEnum == QuestionType.FILL_BLANKS) {
+//                        FillBlanks newQuestion = new FillBlanks(readID, QuestionType.FILL_BLANKS, readQuestionText, readAnswerIndex);
+//                        newQuestion.setPossibleAnswers(readAnswers);
+//                        questions.add(newQuestion);
+//                    }
                 }
                 scanner.nextLine();
             }
         }
     }
 
-    /**
-     * delete a question
-     * @param filename is the name of the file
-     * @param questionIndex is the location of the question in the list
-     * @throws IOException when file reading and writing
-     */
     public void removeQuestion(String filename, int questionIndex) throws IOException {
         // remove from file
         fileReader = new FileReader(filename);
@@ -234,6 +228,7 @@ public class QuestionBank {
         File oldFile = new File(filename);
         oldFile.delete();
         tempFile.renameTo(oldFile);
+
     }
 
     public void showAllQuestions(){
