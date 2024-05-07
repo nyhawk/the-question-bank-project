@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class shows and manages the menu
+ */
 public class Menu {
     private ArrayList<Module> modules = new ArrayList<>();
     private Scanner userInp = new Scanner(System.in);
@@ -11,7 +14,7 @@ public class Menu {
     }
     /**
      * get the menu option selected by user and initialise appropriate objects
-     */
+     **/
     public void manageMenu(int menuOpt) {
         boolean validIDs;
         String questionBankID;
@@ -281,16 +284,16 @@ public class Menu {
     }
 
 
-    /**
-     * outputs the menu
-     */
-    public void printMenu() {
-        System.out.println("\n Select an option \n " +
-                "1 - Add empty question bank \n 2 - Add question \n " +
-                "3 - Show question banks \n 4 - Show questions \n " +
-                "5 - Delete question bank \n 6 - Delete question \n " +
-                "7 - Take quiz \n 8 - Exit \n");
-    }
+//    /**
+//     * outputs the menu
+//     */
+//    public void printMenu() {
+//        System.out.println("\n Select an option \n " +
+//                "1 - Add empty question bank \n 2 - Add question \n " +
+//                "3 - Show question banks \n 4 - Show questions \n " +
+//                "5 - Delete question bank \n 6 - Delete question \n " +
+//                "7 - Take quiz \n 8 - Exit \n");
+//    }
 
     /**
      * validate the inputted question bank identifier

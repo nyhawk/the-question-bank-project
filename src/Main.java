@@ -13,7 +13,17 @@ public class Main {
         System.out.println("********** The Question Bank **********");
 
         while (true) {
-            menu.printMenu();
+           // menu.printMenu();
+            /**
+             * outputs the menu
+             */
+
+                System.out.println("\n Select an option \n " +
+                        "1 - Add empty question bank \n 2 - Add question \n " +
+                        "3 - Show question banks \n 4 - Show questions \n " +
+                        "5 - Delete question bank \n 6 - Delete question \n " +
+                        "7 - Take quiz \n 8 - Exit \n");
+
             menuOpt = userInp.nextInt();
             userInp.nextLine(); // consume newline character
 
