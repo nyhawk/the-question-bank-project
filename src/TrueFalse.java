@@ -1,6 +1,12 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Nia Hawkins
+ * @version 2
+ *
+ * Allows true or false questions in a question bank
+ */
 public class TrueFalse extends Question{
 
 
@@ -52,8 +58,11 @@ public class TrueFalse extends Question{
      */
     @Override
     public void showQuestion(int questionNum){
-        System.out.print("True or false");
+        System.out.println("True or false");
+        System.out.println();
         super.showQuestion(questionNum);
+        System.out.println();
+        System.out.println("Answer T for true, or F for false");
     }
 
     /**
@@ -68,9 +77,9 @@ public class TrueFalse extends Question{
         inpString = userInp.nextLine();
         newQuestion.setQuestionText(inpString);
 
-
-        System.out.println("Enter the answer, T or F");
+        // continue to prompt user for input of T or F until inputted
         do {
+            System.out.println("Enter the answer, T or F");
             inpString = userInp.nextLine();
             newQuestion.possibleAnswers.addFirst(inpString);
         } while (!inpString.equalsIgnoreCase("T") && !inpString.equalsIgnoreCase("F"));
@@ -92,6 +101,7 @@ public class TrueFalse extends Question{
      */
     @Override
     public int checkAnswer(String userAnswer, int score){
+        // if the answer is correct, add 1 to score
         if (possibleAnswers.getFirst().equalsIgnoreCase(userAnswer)){
             score++;
         }

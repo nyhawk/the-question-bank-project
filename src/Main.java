@@ -1,6 +1,9 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
+ * @author Nia Hawkins
+ * @version 5
  * the main class from which the application will run
  */
 public class Main {
@@ -13,14 +16,23 @@ public class Main {
         System.out.println("********** The Question Bank **********");
 
         while (true) {
+            // show menu
             menu.printMenu();
-            menuOpt = userInp.nextInt();
-            userInp.nextLine(); // consume newline character
+            try {
+                // get user input
+                menuOpt = userInp.nextInt();
+                userInp.nextLine(); // consume newline character
 
-            menu.manageMenu(menuOpt);
+                // execute the function selected
+                menu.manageMenu(menuOpt);
 
-            if (menuOpt==8){
-                System.exit(0);
+                if (menuOpt==8){
+                    System.exit(0);
+                }
+
+            } catch (InputMismatchException e){
+                System.err.println(e);
+                userInp.next();
             }
         }
     }

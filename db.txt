@@ -1,4 +1,5 @@
-1:1;;FILL_BLANKS;;tyeuw{{blank}};;[aae];;0;;
-1:1;;FILL_BLANKS;;eaeaeae{{blank}};;[popopopp];;0;;
-1:1;;SINGLE_ANSWER;;abc;;[a, b, c];;1;;
-1:1;;SINGLE_ANSWER;;idk;;[a, b, c];;2;;
+23:23;;TRUE_FALSE;;fhfkflhehehehs;;[f];;0;;
+23:23;;TRUE_FALSE;;asdfghjkl;;[t];;0;;
+CS12320:02;;TRUE_FALSE;;Public classes can be accessed everywhere;;[t];;0;;
+CS12320:01;;SINGLE_ANSWER;;ghdjs;;[w, e, r];;1;;
+CS12320:02;;FILL_BLANKS;;In Java, the process of creating multiple methods with the same name but with different parameters is called {{blank}};;[method overloading];;0;;

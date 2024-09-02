@@ -1,12 +1,19 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * @author Nia Hawkins
+ * @version 1
+ *
+ * calls appropriate methods and initialses objects based on menu option chosen
+ */
 public class Menu {
     private ArrayList<Module> modules = new ArrayList<>();
     private Scanner userInp = new Scanner(System.in);
-
+    private QuestionBank bank = null;
     public Menu() {
     }
     /**
@@ -15,10 +22,7 @@ public class Menu {
     public void manageMenu(int menuOpt) {
         boolean validIDs;
         String questionBankID;
-        QuestionBank bank = null;
         String moduleID;
-
-        System.out.println("********** The Question Bank **********");
 
         switch (menuOpt) {
             case 1:
@@ -80,23 +84,7 @@ public class Menu {
                     // add question
                     Question question = SelectQuestion.initialseQuestion(questionBankID, questionType);
                     question.addQuestion();
-//                    switch (inpQuestionType) {
-//                        case 1:
-//                            // single answer
-//                            SingleAnswer singleAnswerQuestion = new SingleAnswer(questionBankID,
-//                                    QuestionType.SINGLE_ANSWER);
-//                            singleAnswerQuestion.addQuestion();
-//
-//                            break;
-//                        case 2:
-//                            // fill-the-blanks
-//                            FillBlanks fillBlanksQuestion;
-//                            fillBlanksQuestion = new FillBlanks(questionBankID, QuestionType.FILL_BLANKS);
-//                            fillBlanksQuestion.addQuestion();
-//                            break;
-//                        default:
-//                            System.out.println("Invalid question type");
-//                    }
+
                 } else {
                     System.out.println("Invalid question bank identifier");
                 }
@@ -116,11 +104,13 @@ public class Menu {
                         newModule.loadQuestionBanks("db.txt");
 
                         // once banks found, output them
-                        newModule.showQuestionBanks();
+                        boolean banksShown = newModule.showAllQuestionBanks(moduleID);
 
                     } catch (IOException e) {
                         System.err.println(e.getMessage());
                     }
+                } else {
+                    System.out.println("Invalid module identifier");
                 }
                 break;
 
@@ -136,12 +126,14 @@ public class Menu {
                     bank = new QuestionBank(questionBankID);
                     try {
                         // find questions in database
-                        bank.loadQuestions("db.txt");
+                        boolean bankFound = bank.loadQuestions("db.txt");
 
                         // show questions loaded from database
                         bank.showAllQuestions();
                     } catch (FileNotFoundException e) {
                         System.err.println(e.getMessage());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 } else{
                     System.out.println("Invalid question bank identifier");
@@ -175,25 +167,30 @@ public class Menu {
 
             case 6:
                 // delete question
-                System.out.println("Input the index of the question to be deleted, " +
+                System.out.println("Input the question number of the question to be deleted, " +
                         "displayed next to the question when all questions shown (menu option 4)");
-                int questionIndex = userInp.nextInt();
+                try {
+                    int questionIndex = userInp.nextInt();
 
-                // user must have seen all questions in a bank to find the question number
-                if (bank != null) {
-                    try {
-                        bank.removeQuestion("db.txt", questionIndex);
-                    } catch (IOException e) {
-                        System.err.println(e.getMessage());
+                    // user must have seen all questions in a bank to find the question number
+                    if (bank != null) {
+                        try {
+                            bank.removeQuestion("db.txt", questionIndex, bank.questions.size());
+                        } catch (IOException e) {
+                            System.err.println(e.getMessage());
+                        }
+                    } else {
+                        System.out.println("View a question bank's questions in option 4 before deleting");
                     }
-                } else {
-                    System.out.println("View a question bank's questions in option 4 before deleting");
-                }
-                break;
+                    break;
 
+                } catch (InputMismatchException e){
+                    System.err.println(e);
+                }
             case 7:
                 // take quiz
                 System.out.println("Select an option to take a quiz \n 1. View question banks \n 2. Input question bank");
+
                 int choice = userInp.nextInt();
                 userInp.nextLine();
 
@@ -209,8 +206,10 @@ public class Menu {
                             try {
                                 // get banks from database, and output them
                                 newModule.loadQuestionBanks("db.txt");
-                                newModule.showQuestionBanks();
-
+                                boolean banksShown = newModule.showAllQuestionBanks(moduleID);
+                                if (!banksShown){
+                                    break;
+                                }
                                 // get user input
                                 System.out.println("Input the question bank identifier");
                                 questionBankID = userInp.nextLine();
@@ -220,10 +219,12 @@ public class Menu {
                                 if (validIDs) {
                                     // load the questions for the inputted bank from database
                                     bank = new QuestionBank(questionBankID);
-                                    bank.loadQuestions("db.txt");
+                                    boolean bankFound = bank.loadQuestions("db.txt");
 
-                                    // take a quiz using the questions in the question bank, including all questions
-                                    bank.takeQuiz(bank.questions.size()-1);
+                                    if (bankFound) {
+                                        // take a quiz using the questions in the question bank, including all questions
+                                        bank.takeQuiz(bank.questions.size());
+                                    }
 
                                 } else{
                                     System.out.println("Invalid question bank identifier");
@@ -232,6 +233,8 @@ public class Menu {
                             } catch (IOException e) {
                                 System.err.println(e.getMessage());
                             }
+                        } else {
+                            System.out.println("Invalid module identifier");
                         }
                         break;
 
@@ -246,7 +249,7 @@ public class Menu {
                             bank = new QuestionBank(questionBankID);
                             try {
                                 // load the question bank from the database
-                                bank.loadQuestions("db.txt");
+                                boolean bankFound = bank.loadQuestions("db.txt");
 
                                 // get the number of questions to show in the quiz
                                 System.out.println("Enter the number of questions in the quiz");
@@ -257,6 +260,8 @@ public class Menu {
 
                             } catch (FileNotFoundException e) {
                                 System.err.println(e.getMessage());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         } else{
                             System.out.println("Invalid question bank identifier");
